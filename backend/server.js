@@ -37,7 +37,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({storage});
 
-////Routes
+////Routes with file registration
+
+
+/////////Routes
+
+app.use("/auth/", authRoutes);
+app.use("/user/", userRoutes);
+
 
 
 const port = process.env.PORT || 5001;
