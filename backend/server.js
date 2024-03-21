@@ -9,7 +9,9 @@ const colors = require("colors");
 const bodyparser = require("body-parser");
 const {fileURLToPath} = require("url");
 const {dbConnect} = require("./config/db.js");
-const {registerUser } = require("./controllers/authController.js")
+const {registerUser } = require("./controllers/authController.js");
+const { verifyToken } = require("./middlewares/protectMiddleware.js");
+const {createPost} =  require("./controllers/postController.js");
 
 //Configurations
 
@@ -40,10 +42,14 @@ const upload = multer({storage});
 ////Routes with file registration
 
 app.post("/auth/register", upload.single("picture", registerUser));
+app.post("/posts", verifyToken, upload.single("picture"), createPost);
+
 /////////Routes
 
 app.use("/auth/", authRoutes);
 app.use("/user/", userRoutes);
+app.post("/posts", postRoutes);
+
 
 
 
