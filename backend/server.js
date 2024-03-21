@@ -9,7 +9,7 @@ const colors = require("colors");
 const bodyparser = require("body-parser");
 const {fileURLToPath} = require("url");
 const {dbConnect} = require("./config/db.js");
-
+const {registerUser } = require("./controllers/authController.js")
 
 //Configurations
 
@@ -39,7 +39,7 @@ const upload = multer({storage});
 
 ////Routes with file registration
 
-
+app.post("/auth/register", upload.single("picture", registerUser));
 /////////Routes
 
 app.use("/auth/", authRoutes);
