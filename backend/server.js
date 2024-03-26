@@ -10,8 +10,11 @@ const bodyparser = require("body-parser");
 const {fileURLToPath} = require("url");
 const {dbConnect} = require("./config/db.js");
 const {registerUser } = require("./controllers/authController.js");
-const { verifyToken } = require("./middlewares/protectMiddleware.js");
+const verifyToken  = require("./middlewares/protectMiddleware.js");
 const {createPost} =  require("./controllers/postController.js");
+const authRoutes = require("./routes/authRoutes.js");
+const postRoutes = require("./routes/postRoutes.js");
+const userRoutes = require("./routes/userRoutes.js");
 
 //Configurations
 
@@ -41,14 +44,14 @@ const upload = multer({storage});
 
 ////Routes with file registration
 
-app.post("/auth/register", upload.single("picture", registerUser));
-app.post("/posts", verifyToken, upload.single("picture"), createPost);
+app.post("/auth/register", upload.single("picture"), registerUser);
+app.post("/posts", upload.single("picture"), createPost);
 
 /////////Routes
 
 app.use("/auth/", authRoutes);
 app.use("/user/", userRoutes);
-app.post("/posts", postRoutes);
+app.use("/posts", postRoutes);
 
 
 
