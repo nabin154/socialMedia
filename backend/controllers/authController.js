@@ -52,7 +52,7 @@ const loginUser = async (req, res) => {
         friends: user.friends,
         viewedProfile: user.viewedProfile,
         impressions: user.impressions,
-        token: user.generateToken(),
+        token: await user.generateToken(),
       });
     } else {
       return res.status(400).json({ msg: "invalid credentials" });
