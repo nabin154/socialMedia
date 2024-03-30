@@ -4,4 +4,4 @@ const HomePage = () => {
   return <div>df</div>;
 };
 
-export default HomePage;``
+export default HomePage;
