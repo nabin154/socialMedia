@@ -44,7 +44,7 @@ const getUserPosts = async (req, res) => {
 
 const likePost = async (req, res) => {
   try {
-    const { id } = req.params.id;
+    const { id } = req.params;
     const { userId } = req.body;
     const post = await Post.findById(id);
     const isLiked = post.likes.get(userId);
@@ -60,6 +60,7 @@ const likePost = async (req, res) => {
       { likes: post.likes },
       { new: true }
     );
+    await updatedPost.populate("userId", "-password");
     res.status(200).json(updatedPost);
   } catch (err) {
     res.status(404).json({ message: err.message });

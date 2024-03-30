@@ -14,6 +14,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await response.json();
+
     dispatch(setPosts({ posts: data }));
   };
 
@@ -40,22 +41,21 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   return (
     <>
-      {posts.map(
-        ({ _id, userId, description, picturePath, likes, comments }) => (
+      {posts &&
+        posts.map((post) => (
           <PostCard
-            key={_id}
-            postId={_id}
-            postUserId={userId._id}
-            name={`${userId.firstName} ${userId.lastName}`}
-            description={description}
-            location={userId.location}
-            picturePath={picturePath}
-            userPicturePath={userId.picturePath}
-            likes={likes}
-            comments={comments}
+            key={post._id}
+            postId={post._id}
+            postUserId={post.userId._id}
+            name={`${post.userId.firstName} ${post.userId.lastName}`}
+            description={post.description}
+            location={post.userId.location}
+            picturePath={post.picturePath}
+            userPicturePath={post.userId.picturePath}
+            likes={post.likes}
+            comments={post.comments}
           />
-        )
-      )}
+        ))}
     </>
   );
 };

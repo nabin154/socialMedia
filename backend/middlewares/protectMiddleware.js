@@ -11,10 +11,10 @@ const jwt = require("jsonwebtoken");
         if (checkToken.startsWith("Bearer ")) {
             let token =   checkToken.split(" ")[1];
 
-        }
+        
         const verified = jwt.verify(token, process.env.JWT_SECRET);
         req.user = verified;
-        next();
+        next();}
 
     } catch (error) {
         return res.status(504).json({error : error.message});
