@@ -60,6 +60,9 @@ const addRemoveFriend = async (req, res) => {
       user.friends.push(friendId);
       friend.friends.push(id);
     }
+    if(user.friendRequest.includes(friendId)){
+      user.friendRequest = user.friendRequest.filter((id) => id != friendId);
+    }
     await user.save();
     await friend.save();
     const friends = await Promise.all(

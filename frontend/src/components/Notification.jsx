@@ -41,12 +41,12 @@ const userId = useSelector((state)=> state.user._id);
       }
     );
     const data = await response.json();
-    console.log(data);
     dispatch(setFriendRequests({ friends: data }));
   };
 
   useEffect(() => {
     getFriends();
+    console.log(friends);
   }, []); // eslint-disable-line react-hooks/exhaustive-dep
   return (
     <>
@@ -57,7 +57,7 @@ const userId = useSelector((state)=> state.user._id);
         </IconButton>
         <Modal
           open={open}
-          onClose={handleClose}
+          onClose={handleClose} 
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
@@ -68,6 +68,8 @@ const userId = useSelector((state)=> state.user._id);
             {friends &&
               friends.map((friend) => (
                 <FriendRequests
+                key={friend._id}
+                friendId={friend._id}
                   name={`${friend.firstName} ${friend.lastName}`}
                   picturePath = {friend.picturePath}
                   occupation={friend.occupation}
