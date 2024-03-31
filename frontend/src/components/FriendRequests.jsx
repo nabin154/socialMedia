@@ -49,15 +49,16 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
         display: "flex",
         alignItems: "center",
         gap: "10px",
-        padding: "10px",
+        padding: "14px",
         borderBottom: "1px solid #ccc",
         backgroundColor: "lightgrey",
         borderRadius: "10px",
+        marginTop: "13px",
       }}
     >
-      <Avatar alt={name} src={picturePath} />
+      <Avatar alt={name} src={`http://localhost:3001/assets/${picturePath}`} />
       <Typography variant="body1" mr={2}>
-        {name}
+        <span style={{textTransform:'capitalize', fontWeight:'650'}}>{name}</span> sent you a friend request.
       </Typography>
       <Button
         sx={{ backgroundColor: "green", color: "white" }}
@@ -69,7 +70,7 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
         sx={{ backgroundColor: "red", color: "white" }}
         onClick={deleteRequest}
       >
-        Cancel
+        decline
       </Button>
     </Box>
   );

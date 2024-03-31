@@ -8,3 +8,9 @@ body,
   width: 100%;
   font-family: "Rubik", sans-serif;
 }
+
+.notification-badge{
+  position: absolute;
+  right: 10%;
+  bottom: 60%;
+}

@@ -39,6 +39,7 @@ const Navbar = () => {
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
+  const  requests   = useSelector((state)=> state.user.friendRequest);
 
   const fullName = `${user.firstName} ${user.lastName}`;
 
@@ -85,9 +86,26 @@ const Navbar = () => {
             )}
           </IconButton>
           <Message sx={{ fontSize: "25px" }} />
-          <NotificationModal>
-           
-          </NotificationModal>
+          <div style={{ position: "relative" }}>
+            <NotificationModal></NotificationModal>
+            {requests && requests.length>0 &&
+            <div className="notification-badge">
+              <span
+                className="badge"
+                style={{
+                  borderRadius: "5px",
+                  padding: "2px 5px",
+                  backgroundColor: "red",
+                  color: "white",
+                  fontWeight: "500",
+                  fontSize: "12px",
+                }}
+              >
+                {requests.length}
+              </span>
+            </div>
+            }
+          </div>
 
           <Help sx={{ fontSize: "25px" }} />
           <FormControl variant="standard" value={fullName}>

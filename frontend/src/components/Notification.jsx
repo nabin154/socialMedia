@@ -15,11 +15,12 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
+  width: 510,
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "1px solid lightblue",
   boxShadow: 24,
-  p: 4,
+  p: 3,
+  borderRadius: '14px'
 };
 
 const NotificationModal = () => {
@@ -57,21 +58,27 @@ const userId = useSelector((state)=> state.user._id);
         </IconButton>
         <Modal
           open={open}
-          onClose={handleClose} 
+          onClose={handleClose}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
           <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
+            <Typography
+              id="modal-modal-title"
+              variant="h5"
+              fontWeight={'bold'}
+              component="h3"
+              textAlign={"center"}
+            >
               Friend Requests :
             </Typography>
             {friends &&
               friends.map((friend) => (
                 <FriendRequests
-                key={friend._id}
-                friendId={friend._id}
+                  key={friend._id}
+                  friendId={friend._id}
                   name={`${friend.firstName} ${friend.lastName}`}
-                  picturePath = {friend.picturePath}
+                  picturePath={friend.picturePath}
                   occupation={friend.occupation}
                 />
               ))}
