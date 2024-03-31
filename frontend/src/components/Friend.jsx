@@ -12,6 +12,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friends);
+  const loggedInUserId = useSelector((state) => state.user._id);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -64,16 +65,20 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
+       {loggedInUserId != friendId && 
       <IconButton
         onClick={() => patchFriend()}
         sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
       >
-        {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
-        ) : (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
-        )}
+       
+            {isFriend ? (
+              <PersonRemoveOutlined sx={{ color: primaryDark }} />
+            ) : (
+              <PersonAddOutlined sx={{ color: primaryDark }} />
+            )}
+       
       </IconButton>
+}
     </FlexBetween>
   );
 };
