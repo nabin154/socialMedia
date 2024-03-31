@@ -26,6 +26,23 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
     dispatch(setFriendRequests({friends : isAccepted}));
 
   };
+  
+  const deleteRequest = async () => {
+    const response = await fetch(
+      `http://localhost:3001/user/friendReq/${id}/${friendId}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    const data = await response.json();
+     dispatch(setFriendRequests({ friends: isAccepted }));
+
+  };
   return (
     <Box
       sx={{
@@ -39,9 +56,21 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
       }}
     >
       <Avatar alt={name} src={picturePath} />
-      <Typography variant="body1" mr={2}>{name}</Typography>
-      <Button sx={{ backgroundColor: "green", color: "white" }} onClick={patchFriend}>Confirm</Button>
-      <Button sx={{ backgroundColor: "red", color: "white" }}>Cancel</Button>
+      <Typography variant="body1" mr={2}>
+        {name}
+      </Typography>
+      <Button
+        sx={{ backgroundColor: "green", color: "white" }}
+        onClick={patchFriend}
+      >
+        Confirm
+      </Button>
+      <Button
+        sx={{ backgroundColor: "red", color: "white" }}
+        onClick={deleteRequest}
+      >
+        Cancel
+      </Button>
     </Box>
   );
 };

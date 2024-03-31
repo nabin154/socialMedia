@@ -5,14 +5,18 @@ import { useNavigate } from "react-router-dom";
 import { setFriends } from "../state/index";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import { useState } from "react";
 
-const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
+
+const Friend = ({ friendId, name, subtitle, userPicturePath,postId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  const friends = useSelector((state) => state.user.friendRequest);
   const loggedInUserId = useSelector((state) => state.user._id);
+const [flag , setFlag] = useState(false);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -23,8 +27,26 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const isFriend = friends.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
+
     const response = await fetch(
       `http://localhost:3001/user/friendReq/${_id}/${friendId}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    // 
+    console.log(data);
+    setFlag((prev) => setFlag(!prev));
+
+  };
+  const addRemoveFriend = async () => {
+    const response = await fetch(
+      `http://localhost:3001/user/${_id}/${friendId}`,
       {
         method: "PATCH",
         headers: {
@@ -65,20 +87,26 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-       {loggedInUserId != friendId && 
-      <IconButton
-        onClick={() => patchFriend()}
-        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-      >
-       
-            {isFriend ? (
-              <PersonRemoveOutlined sx={{ color: primaryDark }} />
+      {loggedInUserId != friendId &&
+        (postId ? (
+          <IconButton
+            onClick={() => patchFriend()}
+            sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+          >
+            {flag ? (
+              <CheckCircleIcon sx={{ color: primaryDark }} />
             ) : (
               <PersonAddOutlined sx={{ color: primaryDark }} />
             )}
-       
-      </IconButton>
-}
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={() => addRemoveFriend()}
+            sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+          >
+            <PersonRemoveOutlined sx={{ color: primaryDark }} />
+          </IconButton>
+        ))}
     </FlexBetween>
   );
 };

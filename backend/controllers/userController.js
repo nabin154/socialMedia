@@ -80,14 +80,15 @@ const addRemoveFriend = async (req, res) => {
 };
 
 const addRemoveFriendRequests = async (req, res) => {
-  console.log('heu');
   try {
     const { id, friendId } = req.params;
     const user = await User.findById(id);
     const friend = await User.findById(friendId);
+    
 
-    if (friend.friendRequest.includes(id)) {
+    if (friend.friendRequest.includes(id) ||user.friendRequest.includes(friendId)) {
       friend.friendRequest = friend.friendRequest.filter((id) => id != id);
+      user.friendRequest = user.friendRequest.filter((id) => id != friendId);
     } else {
       friend.friendRequest.push(id);
     }
