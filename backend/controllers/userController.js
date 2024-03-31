@@ -28,9 +28,26 @@ const getUserFriends = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+const getUserFriendRequests = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const user = await User.findById(id);
+
+    const friends = await Promise.all(
+      user.friendRequest.map((id) => User.findById(id))
+    );
+    const formattedFriends = friends.map(
+      ({ _id, firstName, lastName, occupation, location, picturePath }) => {
+        return { _id, firstName, lastName, occupation, location, picturePath };
+      }
+    );
+    res.status(200).json(formattedFriends);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 
 const addRemoveFriend = async (req, res) => {
-  console.log("debug");
   try {
     const { id, friendId } = req.params;
     const user = await User.findById(id);
@@ -53,7 +70,34 @@ const addRemoveFriend = async (req, res) => {
         return { _id, firstName, lastName, occupation, location, picturePath };
       }
     );
-    console.log(formattedFriends);
+    res.status(200).json(formattedFriends);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const addRemoveFriendRequests = async (req, res) => {
+  console.log('heu');
+  try {
+    const { id, friendId } = req.params;
+    const user = await User.findById(id);
+    const friend = await User.findById(friendId);
+
+    if (friend.friendRequest.includes(id)) {
+      friend.friendRequest = friend.friendRequest.filter((id) => id != id);
+    } else {
+      friend.friendRequest.push(id);
+    }
+    await user.save();
+    await friend.save();
+    const friends = await Promise.all(
+      user.friendRequest.map((id) => User.findById(id))
+    );
+    const formattedFriends = friends.map(
+      ({ _id, firstName, lastName, occupation, location, picturePath }) => {
+        return { _id, firstName, lastName, occupation, location, picturePath };
+      }
+    );
     res.status(200).json(formattedFriends);
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -61,4 +105,10 @@ const addRemoveFriend = async (req, res) => {
 };
 
 
-module.exports = { getUserFriends, addRemoveFriend, getUser}
+module.exports = {
+  getUserFriends,
+  getUserFriendRequests,
+  addRemoveFriend,
+  getUser,
+  addRemoveFriendRequests,
+};

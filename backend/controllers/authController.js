@@ -49,6 +49,7 @@ const loginUser = async (req, res) => {
         occupation: user.occupation,
         email: user.email,
         picturePath: user.picturePath,
+        friendRequest: user.friendRequest,
         friends: user.friends,
         viewedProfile: user.viewedProfile,
         impressions: user.impressions,
