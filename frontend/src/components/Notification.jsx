@@ -47,7 +47,6 @@ const userId = useSelector((state)=> state.user._id);
 
   useEffect(() => {
     getFriends();
-    console.log(friends);
   }, []); // eslint-disable-line react-hooks/exhaustive-dep
   return (
     <>

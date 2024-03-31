@@ -8,15 +8,15 @@ import UserImage from "./UserImage";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useState } from "react";
 
-
-const Friend = ({ friendId, name, subtitle, userPicturePath,postId }) => {
+const Friend = ({ friendId, name, subtitle, userPicturePath, postId }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friendRequest);
   const loggedInUserId = useSelector((state) => state.user._id);
-const [flag , setFlag] = useState(false);
+  const [flag, setFlag] = useState(false);
+  const friendsArr = useSelector((state) => state.user.friends);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -24,25 +24,26 @@ const [flag , setFlag] = useState(false);
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  const isFriend = friends.find((friend) => friend._id === friendId);
+  const isFriend = friendsArr.find((friend) => friend._id === friendId);
 
   const patchFriend = async () => {
-
-    const response = await fetch(
-      `http://localhost:3001/user/friendReq/${_id}/${friendId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    // 
-    console.log(data);
-    setFlag((prev) => setFlag(!prev));
-
+    console.log(isFriend);
+    if (isFriend == undefined) {
+      const response = await fetch(
+        `http://localhost:3001/user/friendReq/${_id}/${friendId}`,
+        {
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      //
+      console.log(data);
+      setFlag((prev) => setFlag(!prev));
+    }
   };
   const addRemoveFriend = async () => {
     const response = await fetch(
