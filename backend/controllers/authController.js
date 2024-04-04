@@ -20,7 +20,6 @@ const registerUser = async (req, res) => {
       email,
       password,
       picturePath,
-      friendRequest,
       friends,
       viewedProfile: Math.floor(Math.random() * 10000),
       impressions: Math.floor(Math.random() * 10000),
