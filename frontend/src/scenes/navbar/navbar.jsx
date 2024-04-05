@@ -88,23 +88,23 @@ const Navbar = () => {
           <Message sx={{ fontSize: "25px" }} />
           <div style={{ position: "relative" }}>
             <NotificationModal></NotificationModal>
-            {requests && requests.length>0 &&
-            <div className="notification-badge">
-              <span
-                className="badge"
-                style={{
-                  borderRadius: "5px",
-                  padding: "2px 5px",
-                  backgroundColor: "red",
-                  color: "white",
-                  fontWeight: "500",
-                  fontSize: "12px",
-                }}
-              >
-                {requests.length}
-              </span>
-            </div>
-            }
+            {requests && requests.length > 0 && (
+              <div className="notification-badge">
+                <span
+                  className="badge"
+                  style={{
+                    borderRadius: "5px",
+                    padding: "2px 5px",
+                    backgroundColor: "red",
+                    color: "white",
+                    fontWeight: "500",
+                    fontSize: "12px",
+                  }}
+                >
+                  {requests.length}
+                </span>
+              </div>
+            )}
           </div>
 
           <Help sx={{ fontSize: "25px" }} />
@@ -181,7 +181,27 @@ const Navbar = () => {
               )}
             </IconButton>
             <Message sx={{ fontSize: "25px" }} />
-            <Notifications sx={{ fontSize: "25px" }} />
+            <div style={{ position: "relative" }}>
+              <NotificationModal></NotificationModal>
+              {requests && requests.length > 0 && (
+                <div className="notification-badge">
+                  <span
+                    className="badge"
+                    style={{
+                      borderRadius: "5px",
+                      padding: "2px 5px",
+                      backgroundColor: "red",
+                      color: "white",
+                      fontWeight: "500",
+                      fontSize: "12px",
+                    }}
+                  >
+                    {requests.length}
+                  </span>
+                </div>
+              )}
+            </div>
+
             <Help sx={{ fontSize: "25px" }} />
             <FormControl variant="standard" value={fullName}>
               <Select

@@ -106,7 +106,10 @@ const addRemoveFriendRequests = async (req, res) => {
         return { _id, firstName, lastName, occupation, location, picturePath };
       }
     );
-    res.status(200).json({sent :user.friendRequest.sent, received : formattedFriends});
+    res
+      .status(200)
+      .json({ sent: user.friendRequest.sent, received: formattedFriends });
+    
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

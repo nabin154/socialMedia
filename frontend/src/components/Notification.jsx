@@ -6,8 +6,7 @@ import {
   
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import state from '../state/index';
-import { setFriendRequests } from "../state/index";
+import state, { setReceivedFriendRequests, setSentFriendRequests } from '../state/index';
 import FriendRequests from "./FriendRequests";
 
 const style = {
@@ -15,7 +14,7 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 510,
+  
   bgcolor: "background.paper",
   border: "1px solid lightblue",
   boxShadow: 24,
@@ -30,7 +29,7 @@ const NotificationModal = () => {
  const dispatch = useDispatch();
  const { palette } = useTheme();
  const token = useSelector((state) => state.token);
- const friends = useSelector((state) => state.user.friendRequest);
+ const friends = useSelector((state) => state.user.friendRequest.received);
 const userId = useSelector((state)=> state.user._id);
 
   const getFriends = async () => {
@@ -42,7 +41,9 @@ const userId = useSelector((state)=> state.user._id);
       }
     );
     const data = await response.json();
-    dispatch(setFriendRequests({ friends: data }));
+    const{sent ,received}= data;
+    dispatch(setReceivedFriendRequests({ friends: received }));
+    dispatch(setSentFriendRequests({ friends: sent }));
   };
 
   useEffect(() => {
@@ -61,7 +62,7 @@ const userId = useSelector((state)=> state.user._id);
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style}>
+          <Box sx={style} maxWidth={'500px'}>
             <Typography
               id="modal-modal-title"
               variant="h5"
@@ -71,8 +72,8 @@ const userId = useSelector((state)=> state.user._id);
             >
               Friend Requests :
             </Typography>
-            {friends.received &&
-              friends.received.map((friend) => (
+            {friends &&
+              friends.map((friend) => (
                 <FriendRequests
                   key={friend._id}
                   friendId={friend._id}

@@ -29,9 +29,16 @@ export const authSlice = createSlice({
         console.error("user friends non-existent :(");
       }
     },
-    setFriendRequests: (state, action) => {
+    setReceivedFriendRequests: (state, action) => {
       if (state.user) {
-        state.user.friendRequest = action.payload.friends;
+        state.user.friendRequest.received = action.payload.friends;
+      } else {
+        console.error("user friendRequest non-existent :(");
+      }
+    },
+    setSentFriendRequests: (state, action) => {
+      if (state.user) {
+        state.user.friendRequest.sent = action.payload.friends;
       } else {
         console.error("user friendRequest non-existent :(");
       }
@@ -49,6 +56,14 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setMode, setLogin, setLogout, setFriends, setPosts, setPost,setFriendRequests } =
-  authSlice.actions;
+export const {
+  setMode,
+  setLogin,
+  setLogout,
+  setFriends,
+  setPosts,
+  setPost,
+  setSentFriendRequests,
+  setReceivedFriendRequests,
+} = authSlice.actions;
 export default authSlice.reducer;

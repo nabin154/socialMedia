@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Typography, useTheme, Avatar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { setFriendRequests, setFriends } from "../state";
+import {  setFriends, setReceivedFriendRequests } from "../state";
 
 const FriendRequests = ({ friendId, name, occupation, picturePath }) => {
 const dispatch = useDispatch();
@@ -23,7 +23,7 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
     );
     const data = await response.json();
     dispatch(setFriends({ friends: data }));
-    dispatch(setFriendRequests({friends : isAccepted}));
+    dispatch(setReceivedFriendRequests({friends : isAccepted}));
 
   };
   
@@ -40,7 +40,7 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
     );
 
     const data = await response.json();
-     dispatch(setFriendRequests({ friends: isAccepted }));
+     dispatch(setReceivedFriendRequests({ friends: isAccepted }));
 
   };
   return (

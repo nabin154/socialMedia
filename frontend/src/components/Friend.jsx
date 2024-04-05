@@ -2,7 +2,7 @@ import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setFriendRequests, setFriends } from "../state/index";
+import { setFriends, setReceivedFriendRequests, setSentFriendRequests } from "../state/index";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
@@ -41,8 +41,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }
       );
       const data = await response.json();
       //
-      console.log(data);
-      dispatch(setFriendRequests({friends: data}))
+   const { sent, received } = data;
+   dispatch(setReceivedFriendRequests({ friends: received }));
+   dispatch(setSentFriendRequests({ friends: sent }));
     }
   };
   const addRemoveFriend = async () => {
