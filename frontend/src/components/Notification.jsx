@@ -71,8 +71,8 @@ const userId = useSelector((state)=> state.user._id);
             >
               Friend Requests :
             </Typography>
-            {friends &&
-              friends.map((friend) => (
+            {friends.received &&
+              friends.received.map((friend) => (
                 <FriendRequests
                   key={friend._id}
                   friendId={friend._id}

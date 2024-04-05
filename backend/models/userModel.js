@@ -9,7 +9,12 @@ const userSchema = new mongoose.Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     picturePath: { type: String, default: " " },
-   friendRequest:{type: Array ,default : []},
+    friendRequest: {
+    
+        sent: [{ type: String , default: []}],
+        received: [{ type: String , default: [] }],
+      
+    },
     friends: { type: Array, default: [] },
     location: { type: String },
     occupation: { type: String },

@@ -39,7 +39,7 @@ const Navbar = () => {
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
-  const  requests   = useSelector((state)=> state.user.friendRequest);
+  const  requests   = useSelector((state)=> state.user.friendRequest.received);
 
   const fullName = `${user.firstName} ${user.lastName}`;
 

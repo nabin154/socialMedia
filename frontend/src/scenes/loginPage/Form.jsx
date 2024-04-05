@@ -14,7 +14,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Dropzone from "react-dropzone";
 import FlexBetween from "../../components/FlexBetween";
-import {setLogin} from "../../state/index";
+import {setLogin, setPosts} from "../../state/index";
   import { ToastContainer, toast } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
 
