@@ -8,7 +8,7 @@ import UserImage from "./UserImage";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useState } from "react";
 
-const Friend = ({ friendId, name, subtitle, userPicturePath, postId }) => {
+const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
@@ -88,12 +88,13 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      {loggedInUserId != friendId &&
+      {loggedInUserId != friendId && !isProfile &&
         (postId ? (
           <IconButton
             onClick={() => patchFriend()}
             sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
           >
+           
             {isFriendRequestSent ? (
               <CheckCircleIcon sx={{ color: primaryDark }} />
             ) : (

@@ -22,6 +22,7 @@ const PostCard = ({
   userPicturePath,
   likes,
   comments,
+  isProfile,
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -56,6 +57,7 @@ const PostCard = ({
         subtitle={location}
         userPicturePath={userPicturePath}
         postId={postId}
+        isProfile={isProfile}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
@@ -96,14 +98,15 @@ const PostCard = ({
       </FlexBetween>
       {isComments && (
         <Box mt="0.5rem">
-          {comments && comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
-              </Typography>
-            </Box>
-          ))}
+          {comments &&
+            comments.map((comment, i) => (
+              <Box key={`${name}-${i}`}>
+                <Divider />
+                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+                  {comment}
+                </Typography>
+              </Box>
+            ))}
           <Divider />
         </Box>
       )}
