@@ -20,11 +20,14 @@ import {
   Menu,
   Close,
 } from "@mui/icons-material";
+import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "../../state/index";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
 import NotificationModal from "../../components/Notification";
+import ChatBox from "../messages/ChatBox";
+import SearchUsers from "../widgets/SearchUsers";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -32,6 +35,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+ 
 
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
@@ -42,6 +46,8 @@ const Navbar = () => {
   const  requests   = useSelector((state)=> state.user.friendRequest.received);
 
   const fullName = `${user.firstName} ${user.lastName}`;
+
+
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -67,10 +73,11 @@ const Navbar = () => {
             gap="3rem"
             padding="0.1rem 1.5rem"
           >
-            <InputBase placeholder="Search..." />
+            <SearchUsers></SearchUsers>
+            {/* <InputBase placeholder="Search..."  onChange={handleSearch} value={searchValue}/>
             <IconButton>
               <Search />
-            </IconButton>
+            </IconButton> */}
           </FlexBetween>
         )}
       </FlexBetween>
@@ -85,7 +92,7 @@ const Navbar = () => {
               <LightMode sx={{ color: dark, fontSize: "25px" }} />
             )}
           </IconButton>
-          <Message sx={{ fontSize: "25px" }} />
+          <ChatBox sx={{ fontSize: "25px" }}></ChatBox>
           <div style={{ position: "relative" }}>
             <NotificationModal></NotificationModal>
             {requests && requests.length > 0 && (
@@ -170,6 +177,7 @@ const Navbar = () => {
             alignItems="center"
             gap="3rem"
           >
+            <SearchUsers ></SearchUsers>
             <IconButton
               onClick={() => dispatch(setMode())}
               sx={{ fontSize: "25px" }}

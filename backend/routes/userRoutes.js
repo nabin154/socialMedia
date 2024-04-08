@@ -6,10 +6,12 @@ const {
   getUserFriends,
   getUserFriendRequests,
   addRemoveFriend,
+  searchUsers,
   addRemoveFriendRequests,
 } = require("../controllers/userController");
 
 
+router.route("/").get( verifyToken, searchUsers);
 router.route("/:id").get(verifyToken, getUser);
 router.route("/:id/friends").get(verifyToken, getUserFriends);
 router.route("/:id/friendRequests").get(verifyToken, getUserFriendRequests);

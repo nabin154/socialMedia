@@ -10,6 +10,28 @@ const getUser = async (req, res) => {
   }
 };
 
+
+const searchUsers = async  (req, res) =>{
+const  username  = req.query.username;
+try {
+ const keyword = username? {
+  $or : [
+     { firstName: { $regex: username, $options: "i" } },
+          { email: { $regex: username, $options: "i" } },
+  ]
+ }:{}
+const users = await User.find({
+  $and: [keyword, { email: { $ne: req.user.email } }],
+});
+  res.json(users);
+
+} catch (error) {
+    res.status(404).json({ message: error.message });
+  
+}
+}
+
+
 const getUserFriends = async (req, res) => {
   try {
     const { id } = req.params;
@@ -118,6 +140,7 @@ const addRemoveFriendRequests = async (req, res) => {
 
 module.exports = {
   getUserFriends,
+  searchUsers,
   getUserFriendRequests,
   addRemoveFriend,
   getUser,
