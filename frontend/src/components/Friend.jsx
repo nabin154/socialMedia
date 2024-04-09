@@ -70,7 +70,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }
         <Box
           onClick={() => {
             navigate(`/profile/${friendId}`);
-            navigate(0);
+           
           }}
         >
           <Typography

@@ -24,6 +24,9 @@ import WidgetWrapper from "../../components/WidgetWrapper";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../state/index";
+import { ToastContainer, toast } from "react-toastify";
+  import "react-toastify/dist/ReactToastify.css";
+
 
 const MyPostWidget = ({ picturePath }) => {
   const dispatch = useDispatch();
@@ -53,6 +56,14 @@ const MyPostWidget = ({ picturePath }) => {
     });
     const data = await response.json();
     dispatch(setPosts({ posts : data}));
+    toast.success("Posted !", {
+      style: {
+        fontSize: "20px",
+      },
+      position: "top-center",
+      autoClose: 3000,
+      theme: "light",
+    });
     setImage(null);
     setPost("");
   };
@@ -165,6 +176,14 @@ const MyPostWidget = ({ picturePath }) => {
         >
           POST
         </Button>
+        <ToastContainer
+position="top-right"
+autoClose={5000}
+hideProgressBar={false}
+
+pauseOnHover
+theme="light"
+/>     
       </FlexBetween>
     </WidgetWrapper>
   );

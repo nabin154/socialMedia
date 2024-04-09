@@ -76,7 +76,10 @@ import {setLogin, setPosts} from "../../state/index";
       onSubmitProps.resetForm();
 console.log(savedUser)
       if (savedUser) {
-        toast("Registration Successful !", {
+        toast.success("Registration Successful !", {
+          style: {
+            fontSize: "20px",
+          },
           position: "top-right",
           autoClose: 3000,
           hideProgressBar: false,
@@ -281,14 +284,14 @@ dispatch(setPosts({posts : null}));
                   ? "Don't have an account? Sign Up here."
                   : "Already have an account? Login here."}
               </Typography>
-             <ToastContainer
-position="top-right"
-autoClose={5000}
-hideProgressBar={false}
+                        <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
 
-pauseOnHover
-theme="light"
-/>            </Box>
+            pauseOnHover
+            theme="light"
+            />            </Box>
           </form>
         )}
       </Formik>

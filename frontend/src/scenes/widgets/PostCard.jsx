@@ -4,13 +4,14 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
-import { Box, Divider, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Divider, IconButton, Typography, useTheme,InputBase,Avatar  } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "../../state/index";
+import { setCommentUsers, setPost, setPosts } from "../../state/index";
+import UserImage from "../../components/UserImage";
 
 const PostCard = ({
   postId,
@@ -25,11 +26,13 @@ const PostCard = ({
   isProfile,
 }) => {
   const [isComments, setIsComments] = useState(false);
+  const [commentData, setCommentData] = useState();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
+  const users = useSelector((state)=> state.commentUsers);
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
@@ -49,6 +52,44 @@ const PostCard = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
+  const getUser = async (userId) => {
+  const response = await fetch(`http://localhost:3001/user/${userId}`, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  const data = await response.json();
+  dispatch(setCommentUsers({user: data}));
+}
+
+const handleClick =()=>{
+  setIsComments(!isComments);
+  comments.map(({userId, comment})=>(
+    getUser(userId)
+
+  ))
+}
+
+const commentOnPost = async () => {
+  const response = await fetch(`http://localhost:3001/posts/comment/${postId}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ text: commentData }), 
+  });
+
+  const data = await response.json();
+  if (data) {
+    dispatch(setPost({ post: data }));
+  }
+  setCommentData('');
+};
+
+
+
+
+
   return (
     <WidgetWrapper m="2rem 0">
       <Friend
@@ -64,8 +105,8 @@ const PostCard = ({
       </Typography>
       {picturePath && (
         <img
-          width="100%"
-          height="auto"
+          Width="100%"
+          Height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
           src={`http://localhost:3001/assets/${picturePath}`}
@@ -85,7 +126,7 @@ const PostCard = ({
           </FlexBetween>
 
           <FlexBetween gap="0.3rem">
-            <IconButton onClick={() => setIsComments(!isComments)}>
+            <IconButton onClick={handleClick}>
               <ChatBubbleOutlineOutlined />
             </IconButton>
             <Typography>{comments.length}</Typography>
@@ -97,19 +138,46 @@ const PostCard = ({
         </IconButton>
       </FlexBetween>
       {isComments && (
-        <Box mt="0.5rem">
-          {comments &&
-            comments.map((comment, i) => (
-              <Box key={`${name}-${i}`}>
-                <Divider />
-                <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                  {comment}
-                </Typography>
-              </Box>
-            ))}
-          <Divider />
-        </Box>
-      )}
+  <Box mt="0.5rem">
+    {comments &&
+      comments.map(({ userId, comment }, i) => {
+        const commentedUser = users.find(user => user._id === userId);
+        return (
+          <Box key={`${name}-${i}`} style={{marginTop:'9px',display:'flex',alignItems:'center'}}>
+            <Divider />
+            
+            <Avatar alt="Remy Sharp"  src={`http://localhost:3001/assets/${commentedUser.picturePath}`} />
+            <div style={{display:'flex',alignItems:'center'}}> 
+            <Typography variant="body2" sx={{ color: main, ml: "0.5rem" ,textAlign:'center',fontWeight:'bold',color:'primary'}}>
+                {commentedUser.firstName}{commentedUser.lastName} :
+              </Typography>
+                        <Typography sx={{ color: main, m: "0.5rem 0", pl: "3rem" }}>
+              {comment}
+            </Typography>
+              </div>
+             
+           
+          </Box>
+        );
+      })}
+      <Box style={{display:'flex'}}>
+    <InputBase
+      placeholder="Leave a comment..."
+      sx={{
+        width: "90%",
+        backgroundColor: palette.neutral.light,
+        borderRadius: "2rem",
+        padding: '5px',
+        textAlign: 'center',
+        marginTop:'5px'
+      }}
+      value={commentData}
+      onChange={(e)=>setCommentData(e.target.value)}
+
+    />
+  <IconButton onClick={commentOnPost}> X </IconButton></Box>
+  </Box>
+)}
     </WidgetWrapper>
   );
 };
