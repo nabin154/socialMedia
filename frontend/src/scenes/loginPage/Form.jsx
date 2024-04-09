@@ -104,7 +104,7 @@ console.log(savedUser)
             token: loggedIn.token,
           })
         );
-
+dispatch(setPosts({posts : null}));
         navigate("/home");
       }
     };

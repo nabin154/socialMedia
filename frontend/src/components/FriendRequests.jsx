@@ -9,7 +9,16 @@ const id = useSelector((state)=> state.user._id);
 const token = useSelector((state)=> state.token);
 const friendrequests =  useSelector((state)=> state.user.friendRequest.received);
 const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
-    
+  const theme = useTheme();
+  const neutralLight = theme.palette.neutral.light;
+  const dark = theme.palette.neutral.dark;
+  const background = theme.palette.background.default;
+  const primaryLight = theme.palette.primary.light;
+  const alt = theme.palette.background.alt;
+  
+  
+
+
   const patchFriend = async () => {
     const response = await fetch(
       `http://localhost:3001/user/${id}/${friendId}`,
@@ -51,14 +60,17 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
         gap: "10px",
         padding: "14px",
         borderBottom: "1px solid #ccc",
-        backgroundColor: "lightgrey",
+        backgroundColor: { background },
         borderRadius: "10px",
         marginTop: "13px",
       }}
     >
       <Avatar alt={name} src={`http://localhost:3001/assets/${picturePath}`} />
       <Typography variant="body1" mr={2}>
-        <span style={{textTransform:'capitalize', fontWeight:'650'}}>{name}</span> sent you a friend request.
+        <span style={{ textTransform: "capitalize", fontWeight: "650" }}>
+          {name}
+        </span>{" "}
+        sent you a friend request.
       </Typography>
       <Button
         sx={{ backgroundColor: "green", color: "white" }}

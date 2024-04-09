@@ -14,7 +14,7 @@ const createPost = async (req, res) => {
       comments: [],
     });
     if (post) {
-      const fullpost = await Post.find().populate("userId", "-password");
+      const fullpost = await Post.find().populate("userId", "-password").sort({updatedAt : -1}).exec();
 
       res.status(201).json(fullpost);
     }
@@ -22,10 +22,9 @@ const createPost = async (req, res) => {
     res.status(409).json({ message: err.message });
   }
 };
-
 const getFeedPosts = async (req, res) => {
   try {
-    const post = await Post.find().populate("userId", "-password");
+    const post = await Post.find().populate("userId", "-password").sort({updatedAt : -1}).exec();
     return res.status(200).json(post);
   } catch (err) {
     res.status(404).json({ error: err.message });
@@ -41,6 +40,8 @@ const getUserPosts = async (req, res) => {
     res.status(404).json({ error: err.message });
   }
 };
+
+
 
 const likePost = async (req, res) => {
   try {

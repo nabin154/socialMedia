@@ -72,6 +72,7 @@ const userId = useSelector((state)=> state.user._id);
             >
               Friend Requests :
             </Typography>
+            
             {friends &&
               friends.map((friend) => (
                 <FriendRequests
@@ -82,6 +83,8 @@ const userId = useSelector((state)=> state.user._id);
                   occupation={friend.occupation}
                 />
               ))}
+             
+              
           </Box>
         </Modal>
       </Box>
