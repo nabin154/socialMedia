@@ -8,17 +8,21 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import ChatIcon from "@mui/icons-material/Chat";
+import CloseIcon from "@mui/icons-material/Close";
 import { Search } from "@mui/icons-material";
 import {useSelector} from 'react-redux'
 import axios from 'axios'
 import Friend from "../../components/Friend";
+
+
 const SearchUsers = () => {
+  const theme = useTheme();
+
   const [showMessageModal, setShowMessageModal] = useState(false);
  const [searchValue, setSearchValue] = useState();
  const [searchedUsers, setSearchedUsers] = useState();
   const token = useSelector((state) => state.token);
-
+  const background = theme.palette.background.default;
  
   const handleSearch = async (e) => {
     setSearchValue(e.target.value);
@@ -67,10 +71,15 @@ const SearchUsers = () => {
             position: "absolute",
             left: "24%",
             top: "10%",
-            backgroundColor: "white",
+            backgroundColor: { background },
           }}
         >
-          <Box display="flex" flexDirection="column" gap="1.5rem" color={'lightblue'}>
+          <Box
+            display="flex"
+            flexDirection="column"
+            gap="1.5rem"
+            color={"lightblue"}
+          >
             {searchedUsers &&
               searchedUsers.map((friend) => (
                 <Friend
@@ -79,10 +88,23 @@ const SearchUsers = () => {
                   name={`${friend.firstName} ${friend.lastName}`}
                   subtitle={friend.occupation}
                   userPicturePath={friend.picturePath}
-                  postId={""}
+                  postId={true}
                 />
               ))}
           </Box>
+          <Button
+            onClick={() => setShowMessageModal(!showMessageModal)}
+            sx={{
+              marginLeft: "40%",
+              marginTop: "10px",
+              backgroundColor: "#00D5FA",
+              color: "white",
+              borderRadius: "8px",
+              height: "22px",
+            }}
+          >
+            close
+          </Button>
         </Box>
       )}
     </>

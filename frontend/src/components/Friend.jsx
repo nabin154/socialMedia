@@ -7,6 +7,8 @@ import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useState } from "react";
+import PeopleIcon from "@mui/icons-material/People";
+
 
 const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }) => {
   const dispatch = useDispatch();
@@ -89,19 +91,25 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }
           </Typography>
         </Box>
       </FlexBetween>
-      {loggedInUserId != friendId && !isProfile &&
+      {loggedInUserId != friendId &&
+        !isProfile &&
         (postId ? (
-          <IconButton
-            onClick={() => patchFriend()}
-            sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-          >
-           
-            {isFriendRequestSent ? (
-              <CheckCircleIcon sx={{ color: primaryDark }} />
-            ) : (
-              <PersonAddOutlined sx={{ color: primaryDark }} />
-            )}
-          </IconButton>
+          isFriend ? (
+            <IconButton>
+              <PeopleIcon sx={{ color: primaryDark }} />
+            </IconButton>
+          ) : (
+            <IconButton
+              onClick={() => patchFriend()}
+              sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+            >
+              {isFriendRequestSent ? (
+                <CheckCircleIcon sx={{ color: primaryDark }} />
+              ) : (
+                <PersonAddOutlined sx={{ color: primaryDark }} />
+              )}
+            </IconButton>
+          )
         ) : (
           <IconButton
             onClick={() => addRemoveFriend()}
