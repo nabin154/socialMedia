@@ -28,6 +28,7 @@ const getFeedPosts = async (req, res) => {
     const user = await User.findById(userId);
     const post = await Post.find({$or :
       [ {userId: userId},{userId: {$in :user.friends }}]}).sort({updatedAt : -1}).populate("userId", "-password").exec();
+
     return res.status(200).json(post);
   } catch (err) {
     res.status(403).json({ error: err.message });
@@ -79,9 +80,10 @@ const commentOnPost = async (req, res) => {
   console.log(userId);
   const { text } = req.body;
   try {
+    const user = await User.findById(userId);
     const post = await Post.findById(postId);
     if (post) {
-      post.comments.push({ userId: userId, comment: text });
+      post.comments.push({ userId: userId, image:user.picturePath,name: `${user.firstName} ${user.lastName}`, comment: text });
       await post.save();
       await post.populate("userId", "-password");
       res.status(200).json(post); 

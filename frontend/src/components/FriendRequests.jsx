@@ -31,8 +31,8 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
       }
     );
     const data = await response.json();
-    dispatch(setFriends({ friends: data }));
     dispatch(setReceivedFriendRequests({friends : isAccepted}));
+    dispatch(setFriends({ friends: data }));
 
   };
   

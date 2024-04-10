@@ -88,6 +88,8 @@ const addRemoveFriend = async (req, res) => {
     }
     await user.save();
     await friend.save();
+    console.log(user.friendRequest);
+    console.log(friend.friendRequest);
     const friends = await Promise.all(
       user.friends.map((id) => User.findById(id))
     );

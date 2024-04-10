@@ -8,7 +8,6 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { Search } from "@mui/icons-material";
 import {useSelector} from 'react-redux'
 import axios from 'axios'
@@ -49,6 +48,10 @@ const SearchUsers = () => {
     
    
   };
+  const handleClose =() =>{
+    setShowMessageModal(!showMessageModal);
+    setSearchValue('');
+  }
 
   return (
     <>
@@ -93,7 +96,7 @@ const SearchUsers = () => {
               ))}
           </Box>
           <Button
-            onClick={() => setShowMessageModal(!showMessageModal)}
+            onClick={handleClose}
             sx={{
               marginLeft: "40%",
               marginTop: "10px",

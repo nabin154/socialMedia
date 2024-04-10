@@ -15,7 +15,7 @@ const postSchema = mongoose.Schema(
     },
   
     comments: [
-      {userId :{type: String}, comment : {type: String}}
+      {userId :{type: String},image :{type: String},name :{type: String}, comment : {type: String}}
     ],
   },
   { timestamps: true }

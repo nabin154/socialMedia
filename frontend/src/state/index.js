@@ -5,7 +5,7 @@ const initialState = {
   user: null,
   token: null,
   posts: [],
-  commentUsers: []
+  commentUsers: [],
 };
 
 export const authSlice = createSlice({
@@ -22,6 +22,8 @@ export const authSlice = createSlice({
     setLogout: (state) => {
       state.user = null;
       state.token = null;
+      state.posts= null;
+      state.commentUsers=null;
     },
     setFriends: (state, action) => {
       if (state.user) {
@@ -47,10 +49,8 @@ export const authSlice = createSlice({
     setPosts: (state, action) => {
       state.posts = action.payload.posts;
     },
-    setCommentUsers: (state, action) => {
-      //todo : if userid already exits don't push
-      state.commentUsers.push(action.payload.user);
-    },
+
+        
     setPost: (state, action) => {
       const updatedPosts = state.posts.map((post) => {
         if (post._id === action.payload.post._id) return action.payload.post;

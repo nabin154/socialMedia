@@ -4,14 +4,14 @@ import {
   FavoriteOutlined,
   ShareOutlined,
 } from "@mui/icons-material";
+import SendIcon from '@mui/icons-material/Send';
 import { Box, Divider, IconButton, Typography, useTheme,InputBase,Avatar  } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setCommentUsers, setPost, setPosts } from "../../state/index";
-import UserImage from "../../components/UserImage";
+import {  setPost, setPosts } from "../../state/index";
 
 const PostCard = ({
   postId,
@@ -30,9 +30,12 @@ const PostCard = ({
   const dispatch = useDispatch();
   const token = useSelector((state) => state.token);
   const loggedInUserId = useSelector((state) => state.user._id);
+  const loggedInUser = useSelector((state) => state.user);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
-  const users = useSelector((state)=> state.commentUsers);
+  const users = useSelector((state)=> state.user.friends);
+  let commentUsers = [...users, loggedInUser];
+  
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
@@ -52,21 +55,11 @@ const PostCard = ({
     dispatch(setPost({ post: updatedPost }));
   };
 
-  const getUser = async (userId) => {
-  const response = await fetch(`http://localhost:3001/user/${userId}`, {
-    method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
-  });
-  const data = await response.json();
-  dispatch(setCommentUsers({user: data}));
-}
-
 const handleClick =()=>{
   setIsComments(!isComments);
-  comments.map(({userId, comment})=>(
-    getUser(userId)
+  // comments.map(({userId, comment})=>(
 
-  ))
+  // ))
 }
 
 const commentOnPost = async () => {
@@ -105,8 +98,8 @@ const commentOnPost = async () => {
       </Typography>
       {picturePath && (
         <img
-          Width="100%"
-          Height="auto"
+          width="100%"
+          height="auto"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
           src={`http://localhost:3001/assets/${picturePath}`}
@@ -137,19 +130,22 @@ const commentOnPost = async () => {
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
+
       {isComments && (
   <Box mt="0.5rem">
+      <Divider />
+
     {comments &&
-      comments.map(({ userId, comment }, i) => {
-        const commentedUser = users.find(user => user._id === userId);
+      comments.map(({ userId,image,name, comment }, i) => {
+        // const commentedUser = commentUsers.find(user => user._id === userId);
         return (
           <Box key={`${name}-${i}`} style={{marginTop:'9px',display:'flex',alignItems:'center'}}>
             <Divider />
             
-            <Avatar alt="Remy Sharp"  src={`http://localhost:3001/assets/${commentedUser.picturePath}`} />
+            <Avatar alt="Remy Sharp"  src={`http://localhost:3001/assets/${image}`} />
             <div style={{display:'flex',alignItems:'center'}}> 
             <Typography variant="body2" sx={{ color: main, ml: "0.5rem" ,textAlign:'center',fontWeight:'bold',color:'primary'}}>
-                {commentedUser.firstName}{commentedUser.lastName} :
+                {name} :
               </Typography>
                         <Typography sx={{ color: main, m: "0.5rem 0", pl: "3rem" }}>
               {comment}
@@ -160,6 +156,7 @@ const commentOnPost = async () => {
           </Box>
         );
       })}
+
       <Box style={{display:'flex'}}>
     <InputBase
       placeholder="Leave a comment..."
@@ -175,7 +172,8 @@ const commentOnPost = async () => {
       onChange={(e)=>setCommentData(e.target.value)}
 
     />
-  <IconButton onClick={commentOnPost}> X </IconButton></Box>
+  <IconButton onClick={commentOnPost}> <SendIcon/> </IconButton>
+  </Box>
   </Box>
 )}
     </WidgetWrapper>
