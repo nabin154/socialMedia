@@ -14,8 +14,10 @@ const createPost = async (req, res) => {
     });
     const user = await User.findById(userId);
     if (post) {
-      const fullpost = await Post.find({$or :
-        [ {userId: userId},{userId: {$in :user.friends }}]}).sort({updatedAt : -1}).populate("userId", "-password").exec();
+      const fullpost = await Post.find({
+        $or:
+          [{ userId: userId }, { userId: { $in: user.friends } }]
+      }).sort({ updatedAt: -1 }).populate("userId", "-password").exec();
       res.status(201).json(fullpost);
     }
   } catch (error) {
@@ -26,8 +28,10 @@ const getFeedPosts = async (req, res) => {
   try {
     const userId = req.user._id;
     const user = await User.findById(userId);
-    const post = await Post.find({$or :
-      [ {userId: userId},{userId: {$in :user.friends }}]}).sort({updatedAt : -1}).populate("userId", "-password").exec();
+    const post = await Post.find({
+      $or:
+        [{ userId: userId }, { userId: { $in: user.friends } }]
+    }).sort({ updatedAt: -1 }).populate("userId", "-password").exec();
 
     return res.status(200).json(post);
   } catch (err) {
@@ -83,10 +87,10 @@ const commentOnPost = async (req, res) => {
     const user = await User.findById(userId);
     const post = await Post.findById(postId);
     if (post) {
-      post.comments.push({ userId: userId, image:user.picturePath,name: `${user.firstName} ${user.lastName}`, comment: text });
+      post.comments.push({ userId: userId, image: user.picturePath, name: `${user.firstName} ${user.lastName}`, comment: text });
       await post.save();
       await post.populate("userId", "-password");
-      res.status(200).json(post); 
+      res.status(200).json(post);
     } else {
       res.status(404).json({ message: "Post not found" });
     }
@@ -96,18 +100,18 @@ const commentOnPost = async (req, res) => {
 };
 
 
-const getAllPostComments = async(req, res) => {}
+const getAllPostComments = async (req, res) => { }
 //   try {
 // const postId = req.params.id;
 // const post = await Post.findById(postId);
 // if(post){
 //   return res.status(200).json(post.comments);
 // }
-    
+
 //   } catch (error) {
 //     res.status(500).json({ message: "Internal server error" });
-    
+
 //   }
 // }
 
-module.exports = { createPost, getFeedPosts, getUserPosts ,likePost,commentOnPost ,getAllPostComments};
+module.exports = { createPost, getFeedPosts, getUserPosts, likePost, commentOnPost, getAllPostComments };

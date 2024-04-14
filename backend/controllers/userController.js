@@ -11,24 +11,24 @@ const getUser = async (req, res) => {
 };
 
 
-const searchUsers = async  (req, res) =>{
-const  username  = req.query.username;
-try {
- const keyword = username? {
-  $or : [
-     { firstName: { $regex: username, $options: "i" } },
-          { email: { $regex: username, $options: "i" } },
-  ]
- }:{}
-const users = await User.find({
-  $and: [keyword, { email: { $ne: req.user.email } }],
-});
-  res.json(users);
+const searchUsers = async (req, res) => {
+  const username = req.query.username;
+  try {
+    const keyword = username ? {
+      $or: [
+        { firstName: { $regex: username, $options: "i" } },
+        { email: { $regex: username, $options: "i" } },
+      ]
+    } : {}
+    const users = await User.find({
+      $and: [keyword, { email: { $ne: req.user.email } }],
+    });
+    res.json(users);
 
-} catch (error) {
+  } catch (error) {
     res.status(404).json({ message: error.message });
-  
-}
+
+  }
 }
 
 
@@ -63,7 +63,7 @@ const getUserFriendRequests = async (req, res) => {
         return { _id, firstName, lastName, occupation, location, picturePath };
       }
     );
-    res.status(200).json({sent : user.friendRequest.sent , received :formattedFriends});
+    res.status(200).json({ sent: user.friendRequest.sent, received: formattedFriends });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -82,7 +82,7 @@ const addRemoveFriend = async (req, res) => {
       user.friends.push(friendId);
       friend.friends.push(id);
     }
-    if(user.friendRequest.received.includes(friendId) && (friend.friendRequest.sent.includes(id))){
+    if (user.friendRequest.received.includes(friendId) && (friend.friendRequest.sent.includes(id))) {
       user.friendRequest.received = user.friendRequest.received.filter((id) => id != friendId);
       friend.friendRequest.sent = friend.friendRequest.sent.filter((id) => id != id);
     }
@@ -109,9 +109,9 @@ const addRemoveFriendRequests = async (req, res) => {
     const { id, friendId } = req.params;
     const user = await User.findById(id);
     const friend = await User.findById(friendId);
-    
 
-    if (friend.friendRequest.received.includes(id) ||user.friendRequest.received.includes(friendId)) {
+
+    if (friend.friendRequest.received.includes(id) || user.friendRequest.received.includes(friendId)) {
       friend.friendRequest.received = friend.friendRequest.received.filter((id) => id != id);
       friend.friendRequest.sent = friend.friendRequest.sent.filter((id) => id != id);
       user.friendRequest.sent = user.friendRequest.sent.filter((id) => id != friendId);
@@ -133,7 +133,7 @@ const addRemoveFriendRequests = async (req, res) => {
     res
       .status(200)
       .json({ sent: user.friendRequest.sent, received: formattedFriends });
-    
+
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

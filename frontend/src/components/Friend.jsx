@@ -28,40 +28,49 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }
   const medium = palette.neutral.medium;
 
 
-
   const patchFriend = async () => {
-    if (isFriend == undefined) {
-      const response = await fetch(
-        `http://localhost:3001/user/friendReq/${_id}/${friendId}`,
-        {
-          method: "PATCH",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+    if (isFriend === undefined) {
+        try {
+            const response = await axiosInstance.patch(
+                `http://localhost:3001/user/friendReq/${_id}/${friendId}`,
+                null, // No data to send in the request body
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+            const data = response.data;
+            const { sent, received } = data;
+            dispatch(setReceivedFriendRequests({ friends: received }));
+            dispatch(setSentFriendRequests({ friends: sent }));
+        } catch (error) {
+            console.error('Error patching friend:', error);
+            // Handle error
         }
-      );
-      const data = await response.json();
-      //
-   const { sent, received } = data;
-   dispatch(setReceivedFriendRequests({ friends: received }));
-   dispatch(setSentFriendRequests({ friends: sent }));
     }
-  };
+};
+
   const addRemoveFriend = async () => {
-    const response = await fetch(
-      `http://localhost:3001/user/${_id}/${friendId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    dispatch(setFriends({ friends: data }));
-  };
+    try {
+        const response = await axiosInstance.patch(
+            `http://localhost:3001/user/${_id}/${friendId}`,
+            {}, 
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                    "Content-Type": "application/json",
+                },
+            }
+        );
+        const data = response.data; // Axios automatically parses JSON response
+        dispatch(setFriends({ friends: data }));
+    } catch (error) {
+        console.error('Error adding/removing friend:', error);
+    }
+};
+
 
   return (
     <FlexBetween>

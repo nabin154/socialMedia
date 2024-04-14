@@ -17,6 +17,7 @@ import FlexBetween from "../../components/FlexBetween";
 import {setLogin, setPosts} from "../../state/index";
   import { ToastContainer, toast } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
+import axiosInstance from "../../refreshToken/Token";
 
   const registerSchema = yup.object().shape({
     firstName: yup.string().required("required"),
@@ -93,24 +94,28 @@ console.log(savedUser)
     };
 
     const login = async (values, onSubmitProps) => {
-      const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
-      const loggedIn = await loggedInResponse.json();
-      onSubmitProps.resetForm();
-      if (loggedIn) {
-        dispatch(
-          setLogin({
-            user: loggedIn,
-            token: loggedIn.token,
-          })
-        );
-dispatch(setPosts({posts : null}));
-        navigate("/home");
+      try {
+          const loggedInResponse = await axiosInstance.post("http://localhost:3001/auth/login", values, {
+              headers: { "Content-Type": "application/json" }
+          });
+          const loggedIn = loggedInResponse.data;
+          onSubmitProps.resetForm();
+          if (loggedIn) {
+              dispatch(
+                  setLogin({
+                      user: loggedIn,
+                      token: loggedIn.token,
+                  })
+              );
+              dispatch(setPosts({ posts: null })); // Reset posts after login
+              navigate("/home");
+          }
+      } catch (error) {
+          console.error('Error logging in:', error);
+          // Handle login error
       }
-    };
+  };
+  
 
     const handleFormSubmit = async (values, onSubmitProps) => {
       if (isLogin) await login(values, onSubmitProps);

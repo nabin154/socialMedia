@@ -12,6 +12,7 @@ import WidgetWrapper from "../../components/WidgetWrapper";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {  setPost, setPosts } from "../../state/index";
+import axiosInstance from "../../refreshToken/Token";
 
 const PostCard = ({
   postId,
@@ -41,19 +42,22 @@ const PostCard = ({
   const main = palette.neutral.main;
   const primary = palette.primary.main;
 
-  const patchLike = async () => {
-    console.log(postId);
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ userId: loggedInUserId }),
-    });
-    const updatedPost = await response.json();
-    dispatch(setPost({ post: updatedPost }));
-  };
+ const patchLike = async () => {
+    try {
+        console.log(postId);
+        const response = await axiosInstance.patch(`http://localhost:3001/posts/${postId}/like`, {
+            userId: loggedInUserId
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const updatedPost = response.data;
+        dispatch(setPost({ post: updatedPost }));
+    } catch (error) {
+        console.error('Error patching like:', error);
+        // Handle error
+    }
+};
+
 
 const handleClick =()=>{
   setIsComments(!isComments);
@@ -62,23 +66,30 @@ const handleClick =()=>{
   // ))
 }
 
+
 const commentOnPost = async () => {
-  const response = await fetch(`http://localhost:3001/posts/comment/${postId}`, {
-    method: "PATCH",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ text: commentData }), 
-  });
+  try {
+      const response = await axiosInstance.patch(
+          `/posts/comment/${postId}`,
+          { text: commentData }, // Request body
+          {
+              headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "application/json",
+              },
+          }
+      );
 
-  const data = await response.json();
-  if (data) {
-    dispatch(setPost({ post: data }));
+      const data = response.data;
+      if (data) {
+          dispatch(setPost({ post: data }));
+      }
+      setCommentData('');
+  } catch (error) {
+      console.error('Error commenting on post:', error);
+      // Handle error
   }
-  setCommentData('');
 };
-
 
 
 

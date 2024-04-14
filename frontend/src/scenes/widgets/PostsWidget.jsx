@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../state/index";
 import PostCard from "./PostCard";
+import axiosInstance from "../../refreshToken/Token";
 
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
@@ -9,27 +10,28 @@ const PostsWidget = ({ userId, isProfile = false }) => {
   const token = useSelector((state) => state.token);
 
   const getPosts = async () => {
-    const response = await fetch("http://localhost:3001/posts", {
-      method: "GET",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await response.json();
+    try {
+        const response = await axiosInstance.get("http://localhost:3001/posts", {
+            headers: { Authorization: `Bearer ${token}` },
+        });
+        dispatch(setPosts({ posts: response.data }));
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        // Handle error
+    }
+};
 
-    dispatch(setPosts({ posts: data }));
-  };
-
-  const getUserPosts = async () => {
-    const response = await fetch(
-      `http://localhost:3001/posts/${userId}/posts`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    const data = await response.json();
-    console.log(data);
-    dispatch(setPosts({ posts: data }));
-  };
+const getUserPosts = async () => {
+  try {
+      const response = await axiosInstance.get(`http://localhost:3001/posts/${userId}/posts`, {
+          headers: { Authorization: `Bearer ${token}` },
+      });
+      dispatch(setPosts({ posts: response.data }));
+  } catch (error) {
+      console.error('Error fetching user posts:', error);
+      // Handle error
+  }
+};
 
   useEffect(() => {
     if (isProfile) {

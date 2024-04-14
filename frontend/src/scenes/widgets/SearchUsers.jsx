@@ -23,31 +23,34 @@ const SearchUsers = () => {
   const token = useSelector((state) => state.token);
   const background = theme.palette.background.default;
  
+ 
+ 
   const handleSearch = async (e) => {
     setSearchValue(e.target.value);
-    setTimeout(async () => {
-        try {
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const { data } = await axios.get(
-        `http://localhost:3001/user?username=${searchValue}`,
-        config
-      );
-      setSearchedUsers(data);
-      console.log(data);
-    } catch (error) {
-      console.log(error);
-    } 
-      setShowMessageModal(!showMessageModal);
-
-    }, 1500);
     
+    // Clear previous timeout (if any) to avoid unnecessary requests
+    clearTimeout(searchTimeout);
+    
+    // Set new timeout to debounce the search
+    searchTimeout = setTimeout(async () => {
+        try {
+            const { data } = await axiosInstance.get(
+                `/user?username=${searchValue}`
+            );
+            setSearchedUsers(data);
+            console.log(data);
+        } catch (error) {
+            // Handle error (e.g., show error message to the user)
+            console.log('Error searching for users:', error);
+        } finally {
+            // Toggle modal (show/hide)
+            setShowMessageModal(!showMessageModal);
+        }
+    }, 1500);
+};
+
    
-  };
+  
   const handleClose =() =>{
     setShowMessageModal(!showMessageModal);
     setSearchValue('');

@@ -1,25 +1,23 @@
 const jwt = require("jsonwebtoken");
 
 
- const verifyToken =   async (req, res, next)  =>{
+const verifyToken = async (req, res, next) => {
 
     try {
-        let checkToken = req.header("Authorization");
+        let checkToken = req.header("Authorization")?.replace("Bearer ", "")
+            || req.cookies?.accessToken;
         if (!checkToken) {
-          return res.status(404).json("token doesnot exits");
+            return res.status(401).json("token doesnot exits");
         }
-        if (checkToken.startsWith("Bearer ")) {
-            let token =   checkToken.split(" ")[1];
-
-        
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        const verified = jwt.verify(checkToken, process.env.JWT_SECRET);
         req.user = verified;
-        next();}
+        next();
+    }
 
-    } catch (error) {
-        return res.status(504).json({error : error.message});
+    catch (error) {
+        return res.status(401).json({ error: error.message });
     }
 }
 
 
-module.exports  = verifyToken;
+module.exports = verifyToken;

@@ -10,16 +10,17 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     picturePath: { type: String, default: " " },
     friendRequest: {
-    
-        sent: [{ type: String , default: []}],
-        received: [{ type: String , default: [] }],
-      
+
+      sent: [{ type: String, default: [] }],
+      received: [{ type: String, default: [] }],
+
     },
     friends: { type: Array, default: [] },
     location: { type: String },
     occupation: { type: String },
     viewedProfile: Number,
     impressions: Number,
+    refreshToken: { type: String },
   },
   {
     timestamps: true,
@@ -53,11 +54,29 @@ userSchema.methods.generateToken = async function () {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "30d",
+        expiresIn: "2m",
       }
     );
   } catch (err) {
     console.error(err);
+  }
+};
+
+userSchema.methods.generateRefreshToken = async function () {
+  try {
+    return jwt.sign(
+      {
+        _id: this._id,
+        email: this.email,
+      },
+      process.env.JWT_REFRESH_SECRET,
+      {
+        expiresIn: '30d',
+      }
+    );
+  } catch (error) {
+    console.error(err);
+
   }
 };
 
