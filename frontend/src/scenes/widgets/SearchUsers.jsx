@@ -9,9 +9,8 @@ import {
   useTheme,
 } from "@mui/material";
 import { Search } from "@mui/icons-material";
-import {useSelector} from 'react-redux'
-import axios from 'axios'
 import Friend from "../../components/Friend";
+import axiosInstance from "../../refreshToken/Token";
 
 
 const SearchUsers = () => {
@@ -20,33 +19,29 @@ const SearchUsers = () => {
   const [showMessageModal, setShowMessageModal] = useState(false);
  const [searchValue, setSearchValue] = useState();
  const [searchedUsers, setSearchedUsers] = useState();
-  const token = useSelector((state) => state.token);
   const background = theme.palette.background.default;
  
  
  
   const handleSearch = async (e) => {
+    let  searchTimeout;
     setSearchValue(e.target.value);
+    console.log(searchValue);
     
-    // Clear previous timeout (if any) to avoid unnecessary requests
     clearTimeout(searchTimeout);
     
-    // Set new timeout to debounce the search
-    searchTimeout = setTimeout(async () => {
+  searchTimeout = setTimeout(async () => {
         try {
-            const { data } = await axiosInstance.get(
-                `/user?username=${searchValue}`
-            );
+            const { data } = await axiosInstance.get(`http://localhost:3001/user?username = ${searchValue}`);
             setSearchedUsers(data);
             console.log(data);
         } catch (error) {
-            // Handle error (e.g., show error message to the user)
             console.log('Error searching for users:', error);
         } finally {
-            // Toggle modal (show/hide)
             setShowMessageModal(!showMessageModal);
         }
     }, 1500);
+
 };
 
    

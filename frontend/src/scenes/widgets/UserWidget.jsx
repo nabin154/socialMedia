@@ -25,26 +25,18 @@ const UserWidget = ({ userId, picturePath }) => {
   const getUser = async () => {
     try {
         const response = await axiosInstance.get(
-            `/user/${userId}`,
-            {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
+            `/user/${userId}`);
 
         const data = response.data;
         setUser(data);
     } catch (error) {
         console.error('Error fetching user:', error);
-        // Handle error
     }
 };
 
   useEffect(() => {
     getUser();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); 
 
   if (!user) {
     return null;

@@ -8,6 +8,7 @@ import UserImage from "./UserImage";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { useState } from "react";
 import PeopleIcon from "@mui/icons-material/People";
+import axiosInstance from "../refreshToken/Token";
 
 
 const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }) => {
@@ -32,22 +33,13 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }
     if (isFriend === undefined) {
         try {
             const response = await axiosInstance.patch(
-                `http://localhost:3001/user/friendReq/${_id}/${friendId}`,
-                null, // No data to send in the request body
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/json",
-                    },
-                }
-            );
+                `http://localhost:3001/user/friendReq/${_id}/${friendId}`);
             const data = response.data;
             const { sent, received } = data;
             dispatch(setReceivedFriendRequests({ friends: received }));
             dispatch(setSentFriendRequests({ friends: sent }));
         } catch (error) {
             console.error('Error patching friend:', error);
-            // Handle error
         }
     }
 };
@@ -55,16 +47,8 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }
   const addRemoveFriend = async () => {
     try {
         const response = await axiosInstance.patch(
-            `http://localhost:3001/user/${_id}/${friendId}`,
-            {}, 
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    "Content-Type": "application/json",
-                },
-            }
-        );
-        const data = response.data; // Axios automatically parses JSON response
+            `http://localhost:3001/user/${_id}/${friendId}`);
+        const data = response.data; 
         dispatch(setFriends({ friends: data }));
     } catch (error) {
         console.error('Error adding/removing friend:', error);

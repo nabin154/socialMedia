@@ -49,6 +49,9 @@ const loginUser = async (req, res) => {
       const accessToken = await user.generateToken();
       const refreshToken = await user.generateRefreshToken();
 
+      user.refreshToken =refreshToken;
+      await user.save();
+
       res.cookie('accessToken', accessToken, { httpOnly: true });
     res.cookie('refreshToken', refreshToken, { httpOnly: true });
 
@@ -75,7 +78,6 @@ const loginUser = async (req, res) => {
 };
 const getNewAccessToken = async (req, res) => {
   const refreshToken = req.cookies?.refreshToken;
-  console.log(refreshToken);
  
   if (!refreshToken) {
       return res.status(403).json({ message: 'Refresh token missing' });
@@ -83,6 +85,18 @@ const getNewAccessToken = async (req, res) => {
   
   try {
     const decoded = await jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+    const user = await User.findById(decoded?._id)
+    
+        if (!user) {
+          return res.status(401).json({ message: 'Invalid refresh token' });
+
+        }
+    
+        if (refreshToken !== user?.refreshToken) {
+          return res.status(402).json({ message: ' Used or expired refresh token' });
+
+            
+        }
       const accessToken = await jwt.sign({ _id: decoded._id, email: decoded.email }, process.env.JWT_SECRET, { expiresIn: '15s' }); // Set expiration to 15 minutes
       res.cookie('accessToken', accessToken, { httpOnly: true });
       res.json({ accessToken });
@@ -91,4 +105,28 @@ const getNewAccessToken = async (req, res) => {
   }
 };
 
-module.exports = { loginUser, registerUser ,getNewAccessToken};
+const logoutUser = async(req,res)=>{
+  await User.findByIdAndUpdate(
+    req.user._id,
+    {
+        $unset: {
+            refreshToken: 1 // this removes the field from document
+        }
+    },
+    {
+        new: true
+    }
+);
+
+const options = {
+    httpOnly: true,
+}
+
+return res
+.status(200)
+.clearCookie("accessToken", options)
+.clearCookie("refreshToken", options)
+.json("successful  loogout");
+};
+
+module.exports = { loginUser, registerUser ,getNewAccessToken,logoutUser};

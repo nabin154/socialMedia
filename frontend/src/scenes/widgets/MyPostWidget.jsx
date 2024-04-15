@@ -26,6 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPosts } from "../../state/index";
 import { ToastContainer, toast } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
+import axiosInstance from "../../refreshToken/Token";
 
 
 const MyPostWidget = ({ picturePath }) => {
@@ -35,7 +36,6 @@ const MyPostWidget = ({ picturePath }) => {
   const [post, setPost] = useState("");
   const { palette } = useTheme();
   const { _id } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
@@ -48,13 +48,10 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picture", image);
       formData.append("picturePath", image.name);
     }
-
-    const response = await fetch(`http://localhost:3001/posts`, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    });
-    const data = await response.json();
+try{
+    const response = await axiosInstance.post(`http://localhost:3001/posts`,formData);
+    const data =  response.data;
+    if(data){
     dispatch(setPosts({ posts : data}));
     toast.success("Posted !", {
       style: {
@@ -66,6 +63,11 @@ const MyPostWidget = ({ picturePath }) => {
     });
     setImage(null);
     setPost("");
+  }
+}catch(error)
+{
+  console.log(error);
+}
   };
 
   return (

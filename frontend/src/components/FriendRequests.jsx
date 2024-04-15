@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Button, Typography, useTheme, Avatar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import {  setFriends, setReceivedFriendRequests } from "../state";
+import axiosInstance from "../refreshToken/Token";
 
 const FriendRequests = ({ friendId, name, occupation, picturePath }) => {
 const dispatch = useDispatch();
@@ -17,41 +18,29 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
   const alt = theme.palette.background.alt;
   
   
-
-
   const patchFriend = async () => {
-    const response = await fetch(
-      `http://localhost:3001/user/${id}/${friendId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    dispatch(setReceivedFriendRequests({friends : isAccepted}));
-    dispatch(setFriends({ friends: data }));
+    try {
+      await axiosInstance.patch(
+        `http://localhost:3001/user/${id}/${friendId}`);
 
+      dispatch(setReceivedFriendRequests({ friends: isAccepted }));
+
+    } catch (error) {
+      console.error("Error accepting friend request:", error);
+    }
   };
-  
+
   const deleteRequest = async () => {
-    const response = await fetch(
-      `http://localhost:3001/user/friendReq/${id}/${friendId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    const data = await response.json();
-     dispatch(setReceivedFriendRequests({ friends: isAccepted }));
-
+    try {
+      await axiosInstance.patch(
+        `http://localhost:3001/user/friendReq/${id}/${friendId}`);
+      dispatch(setReceivedFriendRequests({ friends: isAccepted }));
+    } catch (error) {
+      console.error("Error declining friend request:", error);
+    }
   };
+
+
   return (
     <Box
       sx={{

@@ -59,24 +59,17 @@ import axiosInstance from "../../refreshToken/Token";
     const isRegister = pageType === "register";
 
     const register = async (values, onSubmitProps) => {
-      // this allows us to send form info with image
       const formData = new FormData();
       for (let value in values) {
         formData.append(value, values[value]);
       }
       formData.append("picturePath", values.picture.name);
-
-      const savedUserResponse = await fetch(
-        "http://localhost:3001/auth/register",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      const savedUser = await savedUserResponse.json();
+try{
+      const response = await axiosInstance.post(
+        "http://localhost:3001/auth/register",formData);
+      const data =  response.data;
       onSubmitProps.resetForm();
-console.log(savedUser)
-      if (savedUser) {
+      if (data) {
         toast.success("Registration Successful !", {
           style: {
             fontSize: "20px",
@@ -91,13 +84,16 @@ console.log(savedUser)
         });
         setPageType("login");
       }
+    }
+    catch(error)
+    {
+      console.error(error);
+    }
     };
 
     const login = async (values, onSubmitProps) => {
       try {
-          const loggedInResponse = await axiosInstance.post("http://localhost:3001/auth/login", values, {
-              headers: { "Content-Type": "application/json" }
-          });
+          const loggedInResponse = await axiosInstance.post("http://localhost:3001/auth/login", values);
           const loggedIn = loggedInResponse.data;
           onSubmitProps.resetForm();
           if (loggedIn) {
@@ -107,15 +103,15 @@ console.log(savedUser)
                       token: loggedIn.token,
                   })
               );
-              dispatch(setPosts({ posts: null })); // Reset posts after login
+              dispatch(setPosts({ posts: null }));
               navigate("/home");
           }
       } catch (error) {
           console.error('Error logging in:', error);
-          // Handle login error
       }
   };
-  
+
+
 
     const handleFormSubmit = async (values, onSubmitProps) => {
       if (isLogin) await login(values, onSubmitProps);

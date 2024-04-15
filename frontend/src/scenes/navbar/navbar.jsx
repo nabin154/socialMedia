@@ -20,7 +20,6 @@ import {
   Menu,
   Close,
 } from "@mui/icons-material";
-import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "../../state/index";
 import { useNavigate } from "react-router-dom";
@@ -28,6 +27,7 @@ import FlexBetween from "../../components/FlexBetween";
 import NotificationModal from "../../components/Notification";
 import ChatBox from "../messages/ChatBox";
 import SearchUsers from "../widgets/SearchUsers";
+import axiosInstance from "../../refreshToken/Token";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
@@ -47,7 +47,19 @@ const Navbar = () => {
 
   const fullName = `${user.firstName} ${user.lastName}`;
 
-
+const handleLogout = async()  =>{
+  try{
+  const  response = await axiosInstance.post('http://localhost:3001/auth/logout',{});
+  if(response.data){
+  dispatch(setLogout());
+  }
+  }
+  catch(error)
+  {
+    console.log(error);
+  }
+  
+}
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -136,7 +148,7 @@ const Navbar = () => {
               <MenuItem value={fullName}>
                 <Typography>{fullName}</Typography>
               </MenuItem>
-              <MenuItem onClick={() => dispatch(setLogout())}>Log Out</MenuItem>
+              <MenuItem onClick={handleLogout}>Log Out</MenuItem>
             </Select>
           </FormControl>
         </FlexBetween>
@@ -232,7 +244,7 @@ const Navbar = () => {
                 <MenuItem value={fullName}>
                   <Typography>{fullName}</Typography>
                 </MenuItem>
-                <MenuItem onClick={() => dispatch(setLogout())}>
+                <MenuItem onClick={handleLogout}>
                   Log Out
                 </MenuItem>
               </Select>

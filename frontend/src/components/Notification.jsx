@@ -8,6 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import state, { setReceivedFriendRequests, setSentFriendRequests } from '../state/index';
 import FriendRequests from "./FriendRequests";
+import axiosInstance from "../refreshToken/Token";
 
 const style = {
   position: "absolute",
@@ -32,19 +33,20 @@ const NotificationModal = () => {
  const friends = useSelector((state) => state.user.friendRequest.received);
 const userId = useSelector((state)=> state.user._id);
 
-  const getFriends = async () => {
-    const response = await fetch(
+const getFriends = async () => {
+  try {
+    const response = await axiosInstance.get(
       `http://localhost:3001/user/${userId}/friendRequests`,
-      {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      }
     );
-    const data = await response.json();
-    const{sent ,received}= data;
+
+    const { sent, received } = response.data;
+
     dispatch(setReceivedFriendRequests({ friends: received }));
     dispatch(setSentFriendRequests({ friends: sent }));
-  };
+  } catch (error) {
+    console.error("Error fetching friend requests:", error);
+  }
+};
 
   useEffect(() => {
     getFriends();

@@ -11,25 +11,19 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getPosts = async () => {
     try {
-        const response = await axiosInstance.get("http://localhost:3001/posts", {
-            headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axiosInstance.get("http://localhost:3001/posts");
         dispatch(setPosts({ posts: response.data }));
     } catch (error) {
         console.error('Error fetching posts:', error);
-        // Handle error
     }
 };
 
 const getUserPosts = async () => {
   try {
-      const response = await axiosInstance.get(`http://localhost:3001/posts/${userId}/posts`, {
-          headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axiosInstance.get(`http://localhost:3001/posts/${userId}/posts`);
       dispatch(setPosts({ posts: response.data }));
   } catch (error) {
       console.error('Error fetching user posts:', error);
-      // Handle error
   }
 };
 
@@ -39,7 +33,7 @@ const getUserPosts = async () => {
     } else {
       getPosts();
     }
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []); 
 
   return (
     <>

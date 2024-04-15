@@ -2,10 +2,9 @@ const jwt = require("jsonwebtoken");
 
 
 const verifyToken = async (req, res, next) => {
-
+    // req.header("Authorization")?.replace("Bearer ", "")|| 
     try {
-        let checkToken = req.header("Authorization")?.replace("Bearer ", "")
-            || req.cookies?.accessToken;
+        let checkToken =req.cookies?.accessToken;
         if (!checkToken) {
             return res.status(401).json("token doesnot exits");
         }

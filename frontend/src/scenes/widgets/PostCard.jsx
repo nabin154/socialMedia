@@ -47,23 +47,17 @@ const PostCard = ({
         console.log(postId);
         const response = await axiosInstance.patch(`http://localhost:3001/posts/${postId}/like`, {
             userId: loggedInUserId
-        }, {
-            headers: { Authorization: `Bearer ${token}` }
         });
         const updatedPost = response.data;
         dispatch(setPost({ post: updatedPost }));
     } catch (error) {
         console.error('Error patching like:', error);
-        // Handle error
     }
 };
 
 
 const handleClick =()=>{
   setIsComments(!isComments);
-  // comments.map(({userId, comment})=>(
-
-  // ))
 }
 
 
@@ -71,13 +65,7 @@ const commentOnPost = async () => {
   try {
       const response = await axiosInstance.patch(
           `/posts/comment/${postId}`,
-          { text: commentData }, // Request body
-          {
-              headers: {
-                  Authorization: `Bearer ${token}`,
-                  "Content-Type": "application/json",
-              },
-          }
+          { text: commentData }
       );
 
       const data = response.data;
@@ -87,7 +75,6 @@ const commentOnPost = async () => {
       setCommentData('');
   } catch (error) {
       console.error('Error commenting on post:', error);
-      // Handle error
   }
 };
 
