@@ -15,7 +15,6 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { _id } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
   const friends = useSelector((state) => state.user.friendRequest.sent);
   const loggedInUserId = useSelector((state) => state.user._id);
   const friendsArr = useSelector((state) => state.user.friends);

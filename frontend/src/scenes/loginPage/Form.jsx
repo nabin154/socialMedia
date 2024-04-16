@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -17,7 +17,8 @@ import FlexBetween from "../../components/FlexBetween";
 import {setLogin, setPosts} from "../../state/index";
   import { ToastContainer, toast } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
-import axiosInstance from "../../refreshToken/Token";
+  import Cookies from 'js-cookie';
+  import axiosInstance from "../../refreshToken/Token";
 
   const registerSchema = yup.object().shape({
     firstName: yup.string().required("required"),
@@ -100,18 +101,23 @@ try{
               dispatch(
                   setLogin({
                       user: loggedIn,
-                      token: loggedIn.token,
                   })
               );
-              dispatch(setPosts({ posts: null }));
+              localStorage.setItem("userInfo", loggedIn._id);
               navigate("/home");
+              // dispatch(setPosts({ posts: null }));
           }
       } catch (error) {
           console.error('Error logging in:', error);
       }
   };
 
-
+useEffect(()=>{
+const isLoggedIn = localStorage.getItem('userInfo');
+if(isLoggedIn){
+  navigate('/home');
+}
+},[]);
 
     const handleFormSubmit = async (values, onSubmitProps) => {
       if (isLogin) await login(values, onSubmitProps);

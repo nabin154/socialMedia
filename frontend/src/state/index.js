@@ -3,7 +3,6 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   mode: "light",
   user: null,
-  token: null,
   posts: [],
   commentUsers: [],
 };
@@ -17,11 +16,9 @@ export const authSlice = createSlice({
     },
     setLogin: (state, action) => {
       state.user = action.payload.user;
-      state.token = action.payload.token;
     },
     setLogout: (state) => {
       state.user = null;
-      state.token = null;
       state.posts= null;
       state.commentUsers=null;
     },

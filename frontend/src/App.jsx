@@ -11,7 +11,7 @@ import ProfilePage from "./scenes/profilePage/ProfilePage";
 function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  const isAuth = Boolean(useSelector((state) => state.token));
+  const isAuth = localStorage.getItem('userInfo');
 
   return (
     <div className="app">
@@ -22,11 +22,11 @@ function App() {
             <Route path="/" element={<LoginPage />} />
             <Route
               path="/home"
-              element={isAuth ? <HomePage /> : <Navigate to="/" />}
+              element={isAuth? <HomePage /> : <Navigate to={'/'}/>}
             />
             <Route
               path="/profile/:userId"
-              element={isAuth ? <ProfilePage /> : <Navigate to="/" />}
+              element={isAuth? <ProfilePage /> : <Navigate to={'/'}/>}
             />
           </Routes>
         </ThemeProvider>

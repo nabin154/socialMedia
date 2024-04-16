@@ -29,7 +29,6 @@ const NotificationModal = () => {
   const handleClose = () => setOpen(false);
  const dispatch = useDispatch();
  const { palette } = useTheme();
- const token = useSelector((state) => state.token);
  const friends = useSelector((state) => state.user.friendRequest.received);
 const userId = useSelector((state)=> state.user._id);
 

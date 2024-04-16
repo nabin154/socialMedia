@@ -67,7 +67,6 @@ const loginUser = async (req, res) => {
         friends: user.friends,
         viewedProfile: user.viewedProfile,
         impressions: user.impressions,
-        token: await user.generateToken(),
       });
     } else {
       return res.status(400).json({ msg: "invalid credentials" });
@@ -97,7 +96,7 @@ const getNewAccessToken = async (req, res) => {
 
             
         }
-      const accessToken = await jwt.sign({ _id: decoded._id, email: decoded.email }, process.env.JWT_SECRET, { expiresIn: '15s' }); // Set expiration to 15 minutes
+      const accessToken = await jwt.sign({ _id: decoded._id, email: decoded.email }, process.env.JWT_SECRET, { expiresIn: '2m' }); // Set expiration to 15 minutes
       res.cookie('accessToken', accessToken, { httpOnly: true });
       res.json({ accessToken });
   } catch (error) {
@@ -118,15 +117,10 @@ const logoutUser = async(req,res)=>{
     }
 );
 
-const options = {
-    httpOnly: true,
-}
+res.clearCookie('accessToken', { httpOnly: true });
+res.clearCookie('refreshToken', { httpOnly: true });
 
-return res
-.status(200)
-.clearCookie("accessToken", options)
-.clearCookie("refreshToken", options)
-.json("successful  loogout");
+return res.status(200).json("successful  loogout");
 };
 
 module.exports = { loginUser, registerUser ,getNewAccessToken,logoutUser};

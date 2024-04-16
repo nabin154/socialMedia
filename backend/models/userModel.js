@@ -54,7 +54,7 @@ userSchema.methods.generateToken = async function () {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "15s",
+        expiresIn: "2m",
       }
     );
   } catch (err) {

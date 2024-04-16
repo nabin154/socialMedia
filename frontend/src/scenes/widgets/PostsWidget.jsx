@@ -7,7 +7,6 @@ import axiosInstance from "../../refreshToken/Token";
 const PostsWidget = ({ userId, isProfile = false }) => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
-  const token = useSelector((state) => state.token);
 
   const getPosts = async () => {
     try {

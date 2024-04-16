@@ -7,7 +7,6 @@ import axiosInstance from "../refreshToken/Token";
 const FriendRequests = ({ friendId, name, occupation, picturePath }) => {
 const dispatch = useDispatch();
 const id = useSelector((state)=> state.user._id);
-const token = useSelector((state)=> state.token);
 const friendrequests =  useSelector((state)=> state.user.friendRequest.received);
 const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
   const theme = useTheme();
