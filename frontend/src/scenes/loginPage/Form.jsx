@@ -112,12 +112,12 @@ try{
       }
   };
 
-useEffect(()=>{
-const isLoggedIn = localStorage.getItem('userInfo');
-if(isLoggedIn){
-  navigate('/home');
-}
-},[]);
+// useEffect(()=>{
+// const isLoggedIn = localStorage.getItem('userInfo');
+// if(isLoggedIn){
+//   navigate('/home');
+// }
+// },[]);
 
     const handleFormSubmit = async (values, onSubmitProps) => {
       if (isLogin) await login(values, onSubmitProps);

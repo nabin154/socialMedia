@@ -7,14 +7,14 @@ const morgan = require("morgan");
 const path = require("path");
 const colors = require("colors");
 const bodyparser = require("body-parser");
-const { fileURLToPath } = require("url");
 const { dbConnect } = require("./config/db.js");
+const verifyToken = require('./middlewares/protectMiddleware.js');
 const { registerUser } = require("./controllers/authController.js");
-const verifyToken = require("./middlewares/protectMiddleware.js");
 const { createPost } = require("./controllers/postController.js");
 const authRoutes = require("./routes/authRoutes.js");
 const postRoutes = require("./routes/postRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
+const chatRoutes = require("./routes/chatRoutes.js");
 const cookieParser  = require('cookie-parser');
 //Configurations
 
@@ -27,8 +27,8 @@ app.use(bodyparser.json({ limit: '30mb', extended: 'true' }));
 app.use(bodyparser.urlencoded({ limit: '30mb', extended: 'true' }));
 app.use(cookieParser());
 app.use(cors({
-  origin: 'http://localhost:5173', // Allow requests from your frontend domain
-  credentials: true // Allow cookies to be sent with requests
+  origin: 'http://localhost:5173', 
+  credentials: true 
 }));
 app.use("/assets", express.static(path.join(__dirname, 'public/assets')));
 
@@ -49,13 +49,14 @@ const upload = multer({ storage });
 ////Routes with file registration
 
 app.post("/auth/register", upload.single("picture"), registerUser);
-app.post("/posts", upload.single("picture"), createPost);
+app.post("/posts", upload.single("picture"),verifyToken, createPost);
 
 /////////Routes
 
 app.use("/auth/", authRoutes);
 app.use("/user/", userRoutes);
 app.use("/posts", postRoutes);
+app.use("/chats", chatRoutes);
 
 
 
