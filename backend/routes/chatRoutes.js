@@ -1,11 +1,11 @@
 const express = require("express");
-const { createChat ,accessChat } = require("../controllers/chatController");
+const { createChat ,accessChat,allChats } = require("../controllers/chatController");
 const verifyToken = require("../middlewares/protectMiddleware")
 const router = express.Router();
 
-router.route('/').get(verifyToken ,accessChat);
-router.route('/createchat').get(verifyToken ,createChat);
-router.route('/:chatId').post(verifyToken ,accessChat);
+router.route('/').get(verifyToken , allChats);
+router.route('/:chatId').get(verifyToken ,accessChat);
+router.route('/createchat').post(verifyToken ,createChat);
 
 
 module.exports = router;

@@ -41,7 +41,24 @@ const accessChat = async (req, res) => {
             res.status(200).json(chat);
         }
         else {
-            return res.status(403).json("error while creating the chat");
+            return res.status(403).json("error while accessing the chat");
+        }
+
+    }
+    catch (error) {
+        return res.status(500).json("internal server error");
+    }
+}
+const allChats = async (req, res) => {
+    try {
+        
+        const chats = await Chat.find({users : {$elemMatch : {$eq: req.user._id}}}).populate("users", "-password -refreshToken");
+        if (chats) {
+            
+           return res.status(200).json(chats);
+        }
+        else {
+            return res.status(403).json("error while fetching the chat");
         }
 
     }
@@ -51,4 +68,4 @@ const accessChat = async (req, res) => {
 }
 
 
-module.exports = { createChat,accessChat }
+module.exports = { createChat,accessChat, allChats }
