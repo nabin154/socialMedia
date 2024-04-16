@@ -15,6 +15,7 @@ const authRoutes = require("./routes/authRoutes.js");
 const postRoutes = require("./routes/postRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 const chatRoutes = require("./routes/chatRoutes.js");
+const messageRoutes = require("./routes/messageRoutes.js");
 const cookieParser  = require('cookie-parser');
 //Configurations
 
@@ -57,6 +58,7 @@ app.use("/auth/", authRoutes);
 app.use("/user/", userRoutes);
 app.use("/posts", postRoutes);
 app.use("/chats", chatRoutes);
+app.use("/messages", messageRoutes);
 
 
 

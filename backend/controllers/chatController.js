@@ -51,11 +51,11 @@ const accessChat = async (req, res) => {
 }
 const allChats = async (req, res) => {
     try {
-        
-        const chats = await Chat.find({users : {$elemMatch : {$eq: req.user._id}}}).populate("users", "-password -refreshToken");
+
+        const chats = await Chat.find({ users: { $elemMatch: { $eq: req.user._id } } }).populate("users", "-password -refreshToken");
         if (chats) {
-            
-           return res.status(200).json(chats);
+
+            return res.status(200).json(chats);
         }
         else {
             return res.status(403).json("error while fetching the chat");
@@ -68,4 +68,4 @@ const allChats = async (req, res) => {
 }
 
 
-module.exports = { createChat,accessChat, allChats }
+module.exports = { createChat, accessChat, allChats }
