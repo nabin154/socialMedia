@@ -2,10 +2,21 @@ import { Avatar, Box } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
 import { isSameSender } from '../../chatlogics/logic';
+import io from 'socket.io-client';
+var socket;
 
-const ScrollableMessages = ({ messages }) => {
+
+const ScrollableMessages = () => {
   const user = useSelector((state) => state.user);
+  const messages = useSelector((state) => state.messages);
   const chatContainerRef = useRef(null);
+
+  // useEffect(() => {
+  //   socket = io("http://localhost:3001");
+
+  // }, []);
+
+   
 
 
   
@@ -15,6 +26,9 @@ const ScrollableMessages = ({ messages }) => {
         chatContainerRef.current.scrollHeight;
     }
   }, [messages]);
+
+
+
 
   return (
     <Box

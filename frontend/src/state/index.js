@@ -4,6 +4,7 @@ const initialState = {
   mode: "light",
   user: null,
   posts: [],
+  messages:[],
   commentUsers: [],
 };
 
@@ -46,6 +47,9 @@ export const authSlice = createSlice({
     setPosts: (state, action) => {
       state.posts = action.payload.posts;
     },
+    setMessages: (state, action) => {
+      state.messages = action.payload;
+    },
 
         
     setPost: (state, action) => {
@@ -67,6 +71,7 @@ export const {
   setPost,
   setSentFriendRequests,
   setReceivedFriendRequests,
-  setCommentUsers
+  setCommentUsers,
+  setMessages
 } = authSlice.actions;
 export default authSlice.reducer;

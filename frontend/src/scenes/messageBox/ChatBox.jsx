@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from 'react';
-import { Box, IconButton, Typography } from "@mui/material";
+import { Box, IconButton, Typography, useMediaQuery } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
 import CloseIcon from '@mui/icons-material/Close';
 import CircleIcon from '@mui/icons-material/Circle';
 import axiosInstance from '../../refreshToken/Token';
 import { getSender } from '../../chatlogics/logic';
 import { useSelector } from 'react-redux';
-import SingleChat from './SingleChat.jsx'; 
+import SingleChat from './SingleChat.jsx';
 
-const ChatBox = ({isNonMobileScreens}) => {
+const ChatBox = () => {
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [fetchAgain , setFetchAgain] = useState(false);
   const [chats, setChats] = useState([]);
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [selectedChat, setSelectedChat] = useState(null); 
   const user = useSelector((state) => state.user);
   const mode = useSelector((state)=> state.mode);
   const backgroundColor = (mode ==='light'?"lightgrey" : '#202329');
   const backgroundColorChat = (mode ==='light'?"#95a5a6" : '#222f3e');
   const color = (mode ==='light'?"black" : 'white');
+
+
 
 
   const fetchChats = async () => {
@@ -58,10 +61,11 @@ fetchChats();
           const sender = getSender(chat, user);
 
           return (
-            <Box key={index} onClick={() => handleChatSelect(chat)} display="flex" alignItems="flex-start" justifyContent={'space_evenly'} gap={2} 
+            <Box key={index} onClick={() => handleChatSelect(chat)} padding={1}
+            display="flex" alignItems="flex-start" justifyContent={'space_evenly'} gap={2} 
           
             sx={{ backgroundColor: backgroundColorChat,color: color, borderRadius:'14px',cursor: 'pointer' ,marginTop:'10px'
-            ,padding: (!isNonMobileScreens?'10px':'15px')}}>
+       }}>
               <img
                 src={`http://localhost:3001/assets/${sender.picturePath}`}
                 alt={`${sender.firstName} ${sender.lastName}`}
@@ -89,16 +93,17 @@ fetchChats();
       {showMessageModal && (
         <Box
           className="modal"
+          width={isSmallScreen?'350px':'500px'}
+          padding={isSmallScreen?'10px':'20px'}
           style={{
-            width: (!isNonMobileScreens?'350px':'500px'),
             borderRadius: "10px",
-            padding: "20px",
+           
             height: '70vh',
 
             color: color,
             position: "fixed",
             top: "11%",
-            right: (!isNonMobileScreens?'9%':'16%'),
+            right: '9%',
             backgroundColor: backgroundColor,
             zIndex: "999",
           }}
@@ -119,7 +124,7 @@ fetchChats();
        setSelectedChat={setSelectedChat} 
        setShowMessageModal={setShowMessageModal}
        setFetchAgain={setFetchAgain}
-       isNonMobileScreens={isNonMobileScreens} />}
+        />}
     </>
   );
 };
