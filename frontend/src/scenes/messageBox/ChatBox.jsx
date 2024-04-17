@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Box, IconButton, Typography } from "@mui/material";
 import ChatIcon from "@mui/icons-material/Chat";
+import CloseIcon from '@mui/icons-material/Close';
 import axiosInstance from '../../refreshToken/Token';
 import { getSender } from '../../chatlogics/logic';
 import { useSelector } from 'react-redux';
@@ -47,13 +48,13 @@ const ChatBox = () => {
           const sender = getSender(chat, user);
 
           return (
-            <Box key={index} display="flex" alignItems="flex-start" gap={2.5} paddingY={1} sx={{ backgroundColor: selectedChat === chat ? "lightblue" : "lightgrey" }}>
+            <Box key={index} onClick={() => handleChatSelect(chat)} display="flex" alignItems="flex-start" gap={2} padding={1} sx={{ backgroundColor: "lightblue", borderRadius:'14px',cursor: 'pointer' }}>
               <img
                 src={`http://localhost:3001/assets/${sender.picturePath}`}
                 alt={`${sender.firstName} ${sender.lastName}`}
                 style={{ width: "50px", height: "50px", borderRadius: "50%", marginRight: "19px" }}
               />
-              <Typography variant="body1" sx={{ fontSize: '16px', fontWeight: 'bold', cursor: 'pointer' }} onClick={() => handleChatSelect(chat)}>
+              <Typography variant="body1" sx={{ fontSize: '16px', fontWeight: 'bold' }} >
                 {sender.firstName} {sender.lastName}
               </Typography>
             </Box>
@@ -75,6 +76,8 @@ const ChatBox = () => {
             width: "500px",
             borderRadius: "10px",
             padding: "20px",
+            height: '70vh',
+
             color: "white",
             position: "fixed",
             top: "13%",
@@ -89,11 +92,12 @@ const ChatBox = () => {
           <div style={{ maxHeight: "400px", overflow: "auto" }}>
             {renderChats()}
           </div>
-          <button onClick={() => setShowMessageModal(false)}>Close</button>
+          <IconButton onClick={()=> setShowMessageModal(!showMessageModal)} sx={{position: 'absolute', top:'0',right:'0', color:'red'}}>
+        <CloseIcon sx={{ fontSize: "25px" }} cursor={"pointer"} />
+      </IconButton>
         </Box>
       )}
-      {/* Render the messages of the selected chat */}
-      {selectedChat && <SingleChat selectedChat={selectedChat} setSelectedChat ={setSelectedChat} setShowMessageModal={setShowMessageModal}/>}
+      {selectedChat && <SingleChat selectedChat={selectedChat} setSelectedChat={setSelectedChat} setShowMessageModal={setShowMessageModal} />}
     </>
   );
 };
