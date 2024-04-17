@@ -1,6 +1,7 @@
 import { Avatar, Box } from '@mui/material';
 import React, { useEffect, useRef } from 'react';
 import { useSelector } from 'react-redux';
+import { isSameSender } from '../../chatlogics/logic';
 
 const ScrollableMessages = ({ messages }) => {
   const user = useSelector((state) => state.user);
@@ -21,7 +22,7 @@ const ScrollableMessages = ({ messages }) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        maxHeight: 'calc(70vh - 120px)',
+        height: 'calc(70vh - 120px)',
         overflowY: 'auto',
         width: '100%',
         scrollbarWidth: 'none',
@@ -43,8 +44,8 @@ const ScrollableMessages = ({ messages }) => {
             <Box>
               <Box
                 sx={{
-                  backgroundColor: 'lightblue',
-                  width: '150px',
+                  backgroundColor: '#4E65FF',
+                  maxWidth: '250px',
                   borderRadius: '12px',
                   padding: '7px',
                   marginTop: '10px',
@@ -59,17 +60,19 @@ const ScrollableMessages = ({ messages }) => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '5px',
+                gap: '6px',
               }}
-            >
+            >{!isSameSender(messages, message, index, user) &&
               <Avatar src={`http://localhost:3001/assets/${message.sender.picturePath}`} />
+            }
               <Box
                 sx={{
-                  backgroundColor: 'lightgreen',
-                  width: '150px',
-                  borderRadius: '12px',
-                  padding: '7px',
+                  backgroundColor: '#4b6584',
+                  maxWidth: '250px',
+                  borderRadius: '10px',
+                  padding: '9px',
                   marginTop: '10px',
+                  marginLeft: isSameSender(messages, message, index, user)?'45px':'',
                 }}
               >
                 {message.content}

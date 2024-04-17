@@ -1,5 +1,5 @@
 import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
-import { Box, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setFriends, setReceivedFriendRequests, setSentFriendRequests } from "../state/index";
@@ -53,12 +53,28 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile }
         console.error('Error adding/removing friend:', error);
     }
 };
+const createChat =async ()=>{
+  try {
+    const response = await axiosInstance.post("http://localhost:3001/chats/createchat",{
+      friendId: friendId,
+    });
+    if(response.data)
+    {
+      const data = response.data;
+      window.alert("chat created successfully");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 
   return (
     <FlexBetween>
       <FlexBetween gap="1rem">
         <UserImage image={userPicturePath} size="55px" />
+        <Button onClick={()=>createChat()}>chat</Button>
+
         <Box
           onClick={() => {
             navigate(`/profile/${friendId}`);

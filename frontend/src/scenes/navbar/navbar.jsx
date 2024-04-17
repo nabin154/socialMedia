@@ -202,7 +202,8 @@ const handleLogout = async()  =>{
                 <LightMode sx={{ color: dark, fontSize: "25px" }} />
               )}
             </IconButton>
-            <Message sx={{ fontSize: "25px" }} />
+            <ChatBox sx={{ fontSize: "25px" }} isNonMobileScreens={isNonMobileScreens}></ChatBox>
+
             <div style={{ position: "relative" }}>
               <NotificationModal></NotificationModal>
               {requests && requests.length > 0 && (
