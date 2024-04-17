@@ -17,7 +17,6 @@ import FlexBetween from "../../components/FlexBetween";
 import {setLogin, setPosts} from "../../state/index";
   import { ToastContainer, toast } from "react-toastify";
   import "react-toastify/dist/ReactToastify.css";
-  import Cookies from 'js-cookie';
   import axiosInstance from "../../refreshToken/Token";
 
   const registerSchema = yup.object().shape({

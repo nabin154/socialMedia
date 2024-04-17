@@ -25,7 +25,7 @@ import { setMode, setLogout } from "../../state/index";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
 import NotificationModal from "../../components/Notification";
-import ChatBox from "../messages/ChatBox";
+import ChatBox from "../messageBox/ChatBox";
 import SearchUsers from "../widgets/SearchUsers";
 import axiosInstance from "../../refreshToken/Token";
 

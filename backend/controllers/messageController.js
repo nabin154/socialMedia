@@ -12,8 +12,8 @@ const sendMessage = async (req, res) => {
             chatId: chatId,
         });
         if (message) {
-            var fullmessage = await message.populate("sender", '-password -refreshToken');
-            fullmessage = await fullmessage.populate("chatId");
+            var fullmessage = await message.populate("sender", '_id firstName lastName picturePath ');
+            fullmessage = await fullmessage.populate("chatId",'-updatedAt -createdAt');
             return res.status(201).json(fullmessage);
         }
         else {
@@ -30,17 +30,18 @@ const sendMessage = async (req, res) => {
 const allMessages = async (req, res) => {
     const { chatId } = req.params;
     try {
-        const messages = await Message.find({ chatId: chatId });
-        const fullmessage = await messages.populate("chatId").populate("sender", "-password -refreshToken");
-        if (fullmessage) {
-            return res.status(201).json(fullmessage);
+        const messages = await Message.find({ chatId: chatId }).populate("sender", '_id firstName lastName picturePath ').populate("chatId",'-updatedAt -createdAt');
+        if (messages) {
+            // var fullmessage = await messages.populate("sender", '-password -refreshToken');
+            // fullmessage = await messages.populate("chatId");
+            return res.status(201).json(messages);
         }
         else {
             return res.status(401).json("error fetching the message");
 
         }
     } catch (error) {
-        return res.status(500).json("internal server error");
+        return res.status(500).json("internal server error!!");
 
     }
 }

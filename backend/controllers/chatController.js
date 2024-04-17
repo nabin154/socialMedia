@@ -1,5 +1,4 @@
 const Chat = require("../models/chatModel");
-const Message = require("../models/messageModel");
 
 
 const createChat = async (req, res) => {
@@ -15,7 +14,7 @@ const createChat = async (req, res) => {
             users: [userId, friendId],
         });
         if (chat) {
-            await chat.populate("users", "-password -refreshToken");
+            await chat.populate("users", "-password -refreshToken -updatedAt -createdAt");
             res.status(200).json(chat);
         }
         else {
@@ -37,7 +36,7 @@ const accessChat = async (req, res) => {
         }
         const chat = await Chat.findById(chatId);
         if (chat) {
-            await chat.populate("users", "-password -refreshToken");
+            await chat.populate("users", "-password -refreshToken -updatedAt -createdAt");
             res.status(200).json(chat);
         }
         else {
@@ -52,7 +51,7 @@ const accessChat = async (req, res) => {
 const allChats = async (req, res) => {
     try {
 
-        const chats = await Chat.find({ users: { $elemMatch: { $eq: req.user._id } } }).populate("users", "-password -refreshToken");
+        const chats = await Chat.find({ users: { $elemMatch: { $eq: req.user._id } } }).populate("users", "-password -refreshToken -updatedAt -createdAt").sort({updatedAt : -1});
         if (chats) {
 
             return res.status(200).json(chats);
