@@ -1,4 +1,4 @@
-
+ 
 
 
 
@@ -21,7 +21,7 @@
 
 #### User Authentication: :
 
--Users can sign up, log in, and securely authenticate using access tokens and refresh tokens.
+- Users can sign up, log in, and securely authenticate using access tokens and refresh tokens.
 
 #### Friend Management::
 
