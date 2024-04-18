@@ -101,4 +101,4 @@ const commentOnPost = async (req, res) => {
 
 
 
-module.exports = { createPost, getFeedPosts, getUserPosts, likePost, commentOnPost, getAllPostComments };
+module.exports = { createPost, getFeedPosts, getUserPosts, likePost, commentOnPost };

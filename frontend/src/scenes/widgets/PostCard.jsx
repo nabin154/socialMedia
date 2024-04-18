@@ -96,7 +96,7 @@ const PostCard = ({
       {picturePath && (
         <img
           width="100%"
-          height="400px"
+          height="500px"
           alt="post"
           style={{ borderRadius: "0.75rem", marginTop: "0.75rem", objectFit: 'cover' }}
           src={`http://localhost:3001/assets/${picturePath}`}
