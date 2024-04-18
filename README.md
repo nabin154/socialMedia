@@ -17,6 +17,10 @@
 
 
 <!-- ABOUT THE PROJECT -->
+
+![Screenshot 2024-04-18 150508](https://github.com/nabin154/socialMedia/assets/82200770/f490b6a7-289b-4644-84f4-780f5ac82ad8)
+
+
 ## Key Features:
 
 #### User Authentication: :
@@ -98,8 +102,16 @@ These are the things you need to do to install this project:
    npm install
    ```
 4. Configure your mongoDB setup in `config.js`
-   
- 
+
+ ##Extra Screenshots : 
+![Screenshot 2024-04-18 150526](https://github.com/nabin154/socialMedia/assets/82200770/4ef32ad9-69a5-46bb-b9d3-d8b9ea80628a)
+![Screenshot 2024-04-18 150651](https://github.com/nabin154/socialMedia/assets/82200770/2ca35a44-37aa-4548-b055-5850a9f1d3dc)
+![Screenshot 2024-04-18 150928](https://github.com/nabin154/socialMedia/assets/82200770/d2e6ff8c-f3a9-465f-9af3-426fe60da25a)
+![Screenshot 2024-04-18 150630](https://github.com/nabin154/socialMedia/assets/82200770/60b6be13-ed3f-4e89-b8ca-87481a225d09)
+
+
+
+
 
 
 <!-- CONTRIBUTING -->
@@ -117,4 +129,4 @@ Don't forget to give the project a star! Thanks again!
 5. Open a Pull Request
 
 
-lIVE DEMO : globetalk-frontend-4vzq1g2ih-nabin-bhandaris-projects.vercel.app
+lIVE DEMO : 
