@@ -5,6 +5,7 @@ const initialState = {
   user: null,
   posts: [],
   messages:[],
+  onlineUsers: null,
   commentUsers: [],
 };
 
@@ -50,6 +51,9 @@ export const authSlice = createSlice({
     setMessages: (state, action) => {
       state.messages = action.payload;
     },
+    setOnlineUsers: (state, action) => {
+      state.onlineUsers = action.payload;
+    },
 
         
     setPost: (state, action) => {
@@ -72,6 +76,7 @@ export const {
   setSentFriendRequests,
   setReceivedFriendRequests,
   setCommentUsers,
-  setMessages
+  setMessages,
+  setOnlineUsers
 } = authSlice.actions;
 export default authSlice.reducer;

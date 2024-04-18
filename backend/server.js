@@ -93,9 +93,10 @@ io.on("connection", (socket) => {
     socket.on("user setup", (userData) => {
         socket.join(userData._id);
         const id = userData._id;
-        onlineUsers.set(id, socket.id);
+        onlineUsers.set(socket.id, userData);
         // console.log(onlineUsers);
         console.log("user connected", userData._id);
+        io.emit("online users", Array.from(onlineUsers));
     })
 
     socket.on("joined room", (room) => {
@@ -110,17 +111,19 @@ io.on("connection", (socket) => {
         // chat.users.forEach((user) => {
         //     if (user._id == newMessage.sender._id) return;
         const user = (chat.users[0] == newMessage.sender._id)?chat.users[1]:chat.users[0];
-        const user1 =onlineUsers.get(user);
-        console.log(user);
-        console.log(user1);
-        socket.in(user1).emit("message received", newMessage);
-     
-        
-
+        socket.in(user).emit("message received", newMessage);
        
     });
 
-
+    socket.on("disconnect", () => {
+        onlineUsers.delete(socket.id);
+        io.emit("online users", Array.from(onlineUsers));
+      });
+      socket.off("setup", () => {
+        
+        console.log("USER DISCONNECTED");
+        socket.leave(userData._id);
+      });
 
 });
 

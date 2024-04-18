@@ -5,13 +5,13 @@ import {
   ShareOutlined,
 } from "@mui/icons-material";
 import SendIcon from '@mui/icons-material/Send';
-import { Box, Divider, IconButton, Typography, useTheme,InputBase,Avatar  } from "@mui/material";
+import { Box, Divider, IconButton, Typography, useTheme, InputBase, Avatar } from "@mui/material";
 import FlexBetween from "../../components/FlexBetween";
 import Friend from "../../components/Friend";
 import WidgetWrapper from "../../components/WidgetWrapper";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  setPost, setPosts } from "../../state/index";
+import { setPost, setPosts } from "../../state/index";
 import axiosInstance from "../../refreshToken/Token";
 
 const PostCard = ({
@@ -33,49 +33,48 @@ const PostCard = ({
   const loggedInUser = useSelector((state) => state.user);
   const isLiked = Boolean(likes[loggedInUserId]);
   const likeCount = Object.keys(likes).length;
-  const users = useSelector((state)=> state.user.friends);
-  let commentUsers = [...users, loggedInUser];
-  
+  const users = useSelector((state) => state.user.friends);
+
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
   const primary = palette.primary.main;
 
- const patchLike = async () => {
+  const patchLike = async () => {
     try {
-        console.log(postId);
-        const response = await axiosInstance.patch(`http://localhost:3001/posts/${postId}/like`, {
-            userId: loggedInUserId
-        });
-        const updatedPost = response.data;
-        dispatch(setPost({ post: updatedPost }));
+      console.log(postId);
+      const response = await axiosInstance.patch(`http://localhost:3001/posts/${postId}/like`, {
+        userId: loggedInUserId
+      });
+      const updatedPost = response.data;
+      dispatch(setPost({ post: updatedPost }));
     } catch (error) {
-        console.error('Error patching like:', error);
+      console.error('Error patching like:', error);
     }
-};
+  };
 
 
-const handleClick =()=>{
-  setIsComments(!isComments);
-}
+  const handleClick = () => {
+    setIsComments(!isComments);
+  }
 
 
-const commentOnPost = async () => {
-  try {
+  const commentOnPost = async () => {
+    try {
       const response = await axiosInstance.patch(
-          `/posts/comment/${postId}`,
-          { text: commentData }
+        `/posts/comment/${postId}`,
+        { text: commentData }
       );
 
       const data = response.data;
       if (data) {
-          dispatch(setPost({ post: data }));
+        dispatch(setPost({ post: data }));
       }
       setCommentData('');
-  } catch (error) {
+    } catch (error) {
       console.error('Error commenting on post:', error);
-  }
-};
+    }
+  };
 
 
 
@@ -89,6 +88,7 @@ const commentOnPost = async () => {
         userPicturePath={userPicturePath}
         postId={postId}
         isProfile={isProfile}
+        online={''}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description}
@@ -98,7 +98,7 @@ const commentOnPost = async () => {
           width="100%"
           height="400px"
           alt="post"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" ,objectFit:'cover'}}
+          style={{ borderRadius: "0.75rem", marginTop: "0.75rem", objectFit: 'cover' }}
           src={`http://localhost:3001/assets/${picturePath}`}
         />
       )}
@@ -129,50 +129,49 @@ const commentOnPost = async () => {
       </FlexBetween>
 
       {isComments && (
-  <Box mt="0.5rem">
-      <Divider />
+        <Box mt="0.5rem">
+          <Divider />
 
-    {comments &&
-      comments.map(({ userId,image,name, comment }, i) => {
-        // const commentedUser = commentUsers.find(user => user._id === userId);
-        return (
-          <Box key={`${name}-${i}`} style={{marginTop:'9px',display:'flex',alignItems:'center'}}>
-            <Divider />
-            
-            <Avatar alt="Remy Sharp"  src={`http://localhost:3001/assets/${image}`} />
-            <div style={{display:'flex',alignItems:'center'}}> 
-            <Typography variant="body2" sx={{ color: main, ml: "0.5rem" ,textAlign:'center',fontWeight:'bold',color:'primary'}}>
-                {name} :
-              </Typography>
-                        <Typography sx={{ color: main, m: "0.5rem 0", pl: "3rem" }}>
-              {comment}
-            </Typography>
-              </div>
-             
-           
+          {comments &&
+            comments.map(({ userId, image, name, comment }, i) => {
+              return (
+                <Box key={`${name}-${i}`} style={{ marginTop: '9px', display: 'flex', alignItems: 'center' }}>
+                  <Divider />
+
+                  <Avatar alt="Remy Sharp" src={`http://localhost:3001/assets/${image}`} />
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <Typography variant="body2" sx={{ color: main, ml: "0.5rem", textAlign: 'center', fontWeight: 'bold', color: 'primary' }}>
+                      {name} :
+                    </Typography>
+                    <Typography sx={{ color: main, m: "0.5rem 0", pl: "3rem" }}>
+                      {comment}
+                    </Typography>
+                  </div>
+
+
+                </Box>
+              );
+            })}
+
+          <Box style={{ display: 'flex' }}>
+            <InputBase
+              placeholder="Leave a comment..."
+              sx={{
+                width: "90%",
+                backgroundColor: palette.neutral.light,
+                borderRadius: "2rem",
+                padding: '5px',
+                textAlign: 'center',
+                marginTop: '5px'
+              }}
+              value={commentData}
+              onChange={(e) => setCommentData(e.target.value)}
+
+            />
+            <IconButton onClick={commentOnPost}> <SendIcon /> </IconButton>
           </Box>
-        );
-      })}
-
-      <Box style={{display:'flex'}}>
-    <InputBase
-      placeholder="Leave a comment..."
-      sx={{
-        width: "90%",
-        backgroundColor: palette.neutral.light,
-        borderRadius: "2rem",
-        padding: '5px',
-        textAlign: 'center',
-        marginTop:'5px'
-      }}
-      value={commentData}
-      onChange={(e)=>setCommentData(e.target.value)}
-
-    />
-  <IconButton onClick={commentOnPost}> <SendIcon/> </IconButton>
-  </Box>
-  </Box>
-)}
+        </Box>
+      )}
     </WidgetWrapper>
   );
 };

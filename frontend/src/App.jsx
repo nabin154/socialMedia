@@ -11,7 +11,6 @@ import ProfilePage from "./scenes/profilePage/ProfilePage";
 function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  const isAuth = localStorage.getItem('userInfo');
 
   return (
     <div className="app">

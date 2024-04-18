@@ -7,8 +7,9 @@ import PostsWidget from "../widgets/PostsWidget";
 import AdvertWidget from "../widgets/Advertisement";
 import FriendListWidget from "../widgets/FriendListWidget";
 import io from "socket.io-client";
-import { useEffect } from "react";
-import { setMessages } from "../../state";
+import { useEffect, useState } from "react";
+import { setMessages, setOnlineUsers } from "../../state";
+import OnelineUsersList from "../widgets/OnlineUsersList";
 var socket;
 
 const HomePage = () => {
@@ -21,6 +22,13 @@ const HomePage = () => {
   useEffect(() => {
     socket = io('http://localhost:3001');
     socket.emit("user setup", user);
+    socket.on("online users", (users) => {
+
+      const friends = users.filter(([id, friend]) => {
+        return friend._id != _id;
+      })
+      dispatch(setOnlineUsers(friends));
+    })
 
     return () => {
       socket.disconnect();
@@ -53,6 +61,8 @@ const HomePage = () => {
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
           <UserWidget userId={_id} picturePath={picturePath} />
+          <OnelineUsersList />
+
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? "42%" : undefined}
