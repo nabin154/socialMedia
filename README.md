@@ -24,33 +24,24 @@
 ## Key Features:
 
 #### User Authentication: :
-
 - Users can sign up, log in, and securely authenticate using access tokens and refresh tokens.
 
 #### Friend Management::
-
 - Users can add friends, send friend requests, and manage their friend list.
 
 #### Posts::
-
 - Users can create posts, like, comment, and interact with posts from friends.
+  
 #### Chat:
-
 - Real-time chat functionality allows users to communicate with their friends instantly.
 
 #### Search Users:
-Users can search for other users by name or email.
+- Users can search for other users by name or email.
 
-- Ensure the privacy and security of your conversations with AES encryption for all messages.
-#### Language Translation:
-
-- Break language barriers with real-time language translation of messages.
-- Users can dynamically update their preferred language, and original messages are easily viewable with a toggle button.
 #### Online User Tracking:
-
 - See who's online in real-time and initiate conversations with available users.
+  
 #### Notifications: :
-
 -  Users receive notifications for friend requests and other important events.
 
 
