@@ -6,10 +6,10 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useDispatch, useSelector } from 'react-redux';
 
 import io from 'socket.io-client';
-import { setMessages } from '../../state';
+import { setMessages, setShowMessageModal } from '../../state';
 var socket;
 
-const SingleChat = ({ selectedChat, setSelectedChat, setShowMessageModal, setFetchAgain }) => {
+const SingleChat = ({ selectedChat, setSelectedChat, setFetchAgain }) => {
   const [newMessage, setNewMessage] = useState('');
   // const [messages, setMessages] = useState([]);
   const dispatch = useDispatch();
@@ -57,7 +57,7 @@ const SingleChat = ({ selectedChat, setSelectedChat, setShowMessageModal, setFet
 
   const handleBack = () => {
     setSelectedChat('');
-    setShowMessageModal(true);
+    dispatch(setShowMessageModal(true));
   }
 
   const fetchMessages = async () => {

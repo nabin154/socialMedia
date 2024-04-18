@@ -2,7 +2,7 @@ import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
 import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setFriends, setReceivedFriendRequests, setSentFriendRequests } from "../state/index";
+import { setFriends, setReceivedFriendRequests, setSentFriendRequests, setShowMessageModal } from "../state/index";
 import FlexBetween from "./FlexBetween";
 import UserImage from "./UserImage";
 import SmsIcon from '@mui/icons-material/Sms';
@@ -62,19 +62,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile, 
       });
       if (response.data) {
         const data = response.data;
-        toast.info("Chat created !", {
-          style: {
-            fontSize: "17px",
-          },
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "light",
-        });
-
+        dispatch(setShowMessageModal(true));
       }
     } catch (error) {
       console.log(error);
@@ -140,19 +128,19 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile, 
             </IconButton>
           )
         ) : (
-        <Box>
-          <IconButton
-          onClick={() => createChat()}
-          sx={{ backgroundColor: primaryLight, p: "0.3rem", mr:'12px' }}
-        >
-          <SmsIcon sx={{ color: primaryDark }} />
-        </IconButton>
-          <IconButton
-            onClick={() => addRemoveFriend()}
-            sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-          >
-            <PersonRemoveOutlined sx={{ color: primaryDark }} />
-          </IconButton>
+          <Box>
+            <IconButton
+              onClick={() => createChat()}
+              sx={{ backgroundColor: primaryLight, p: "0.3rem", mr: '12px' }}
+            >
+              <SmsIcon sx={{ color: primaryDark }} />
+            </IconButton>
+            <IconButton
+              onClick={() => addRemoveFriend()}
+              sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+            >
+              <PersonRemoveOutlined sx={{ color: primaryDark }} />
+            </IconButton>
           </Box>
         ))) : (
 
@@ -164,14 +152,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile, 
         </IconButton>
       )}
 
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
 
-        pauseOnHover
-        theme="light"
-      />
     </FlexBetween>
   );
 };

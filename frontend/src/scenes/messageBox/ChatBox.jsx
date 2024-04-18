@@ -5,16 +5,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import CircleIcon from '@mui/icons-material/Circle';
 import axiosInstance from '../../refreshToken/Token';
 import { getSender } from '../../chatlogics/logic';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SingleChat from './SingleChat.jsx';
+import { setShowMessageModal } from '../../state/index.js';
 
 const ChatBox = () => {
-  const [showMessageModal, setShowMessageModal] = useState(false);
+  const dispatch = useDispatch();
   const [fetchAgain, setFetchAgain] = useState(false);
   const [chats, setChats] = useState([]);
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const [selectedChat, setSelectedChat] = useState(null);
   const user = useSelector((state) => state.user);
+  const showMessageModal = useSelector((state) => state.showMessageModal);
   const onlineUsers = useSelector((state) => state.onlineUsers);
 
   const mode = useSelector((state) => state.mode);
@@ -41,19 +43,19 @@ const ChatBox = () => {
   }
 
   const handleClick = () => {
-    setShowMessageModal(!showMessageModal);
+    dispatch(setShowMessageModal(!showMessageModal));
     fetchChats();
   }
 
   const handleChatSelect = (chat) => {
-    setShowMessageModal(false);
+    dispatch(setShowMessageModal(false));
 
     setSelectedChat(chat);
   }
 
   useEffect(() => {
     fetchChats();
-  }, [fetchAgain]);
+  }, [showMessageModal]);
 
   const renderChats = () => {
     if (!chats || chats.length === 0) {
@@ -124,7 +126,7 @@ const ChatBox = () => {
           <div style={{ maxHeight: "400px", overflow: "auto", padding: '20px 30px' }}>
             {renderChats()}
           </div>
-          <IconButton onClick={() => setShowMessageModal(!showMessageModal)} sx={{ position: 'absolute', top: '0', right: '0', color: 'red' }}>
+          <IconButton onClick={() => dispatch(setShowMessageModal(!showMessageModal))} sx={{ position: 'absolute', top: '0', right: '0', color: 'red' }}>
             <CloseIcon sx={{ fontSize: "25px" }} cursor={"pointer"} />
           </IconButton>
         </Box>
