@@ -106,6 +106,18 @@ const Form = () => {
         // dispatch(setPosts({ posts: null }));
       }
     } catch (error) {
+      toast.error("Login failed !!", {
+        style: {
+          fontSize: "16px",
+        },
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
       console.error('Error logging in:', error);
     }
   };
