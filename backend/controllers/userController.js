@@ -6,7 +6,7 @@ const getUser = async (req, res) => {
     const user = await User.findById(id);
     res.status(200).json(user);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -26,7 +26,7 @@ const searchUsers = async (req, res) => {
     res.json(users);
 
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(500).json({ message: error.message });
 
   }
 }
@@ -47,9 +47,12 @@ const getUserFriends = async (req, res) => {
     );
     res.status(200).json(formattedFriends);
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
+
+
+
 const getUserFriendRequests = async (req, res) => {
   try {
     const { id } = req.params;
@@ -65,9 +68,11 @@ const getUserFriendRequests = async (req, res) => {
     );
     res.status(200).json({ sent: user.friendRequest.sent, received: formattedFriends });
   } catch (err) {
-    res.status(400).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
+
+
 
 const addRemoveFriend = async (req, res) => {
   try {
@@ -100,9 +105,11 @@ const addRemoveFriend = async (req, res) => {
     );
     res.status(200).json(formattedFriends);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
+
+
 
 const addRemoveFriendRequests = async (req, res) => {
   try {
@@ -135,9 +142,10 @@ const addRemoveFriendRequests = async (req, res) => {
       .json({ sent: user.friendRequest.sent, received: formattedFriends });
 
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
+
 
 
 module.exports = {

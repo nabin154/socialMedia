@@ -21,7 +21,7 @@ const createPost = async (req, res) => {
       res.status(201).json(fullpost);
     }
   } catch (error) {
-    res.status(403).json({ message: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 const getFeedPosts = async (req, res) => {
@@ -35,7 +35,7 @@ const getFeedPosts = async (req, res) => {
 
     return res.status(200).json(post);
   } catch (err) {
-    res.status(403).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -45,7 +45,7 @@ const getUserPosts = async (req, res) => {
     const post = await Post.find({ userId }).populate("userId", "-password");
     res.status(200).json(post);
   } catch (err) {
-    res.status(404).json({ error: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -72,7 +72,7 @@ const likePost = async (req, res) => {
     await updatedPost.populate("userId", "-password");
     res.status(200).json(updatedPost);
   } catch (err) {
-    res.status(404).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -100,18 +100,5 @@ const commentOnPost = async (req, res) => {
 };
 
 
-const getAllPostComments = async (req, res) => { }
-//   try {
-// const postId = req.params.id;
-// const post = await Post.findById(postId);
-// if(post){
-//   return res.status(200).json(post.comments);
-// }
-
-//   } catch (error) {
-//     res.status(500).json({ message: "Internal server error" });
-
-//   }
-// }
 
 module.exports = { createPost, getFeedPosts, getUserPosts, likePost, commentOnPost, getAllPostComments };

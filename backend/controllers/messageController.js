@@ -4,7 +4,7 @@ const sendMessage = async (req, res) => {
     const { content, chatId } = req.body;
     try {
         if (!content || !chatId) {
-            return res.status(401).json("error sending the message");
+            return res.status(401).json("chatId or content missing !");
         }
         const message = await Message.create({
             sender: req.user._id,
