@@ -66,7 +66,7 @@ const Form = () => {
     formData.append("picturePath", values.picture.name);
     try {
       const response = await axiosInstance.post(
-        "http://localhost:3001/auth/register", formData);
+        "/auth/register", formData);
       const data = response.data;
       onSubmitProps.resetForm();
       if (data) {
@@ -92,7 +92,7 @@ const Form = () => {
 
   const login = async (values, onSubmitProps) => {
     try {
-      const loggedInResponse = await axiosInstance.post("http://localhost:3001/auth/login", values);
+      const loggedInResponse = await axiosInstance.post("/auth/login", values);
       const loggedIn = loggedInResponse.data;
       onSubmitProps.resetForm();
       if (loggedIn) {
@@ -103,7 +103,7 @@ const Form = () => {
         );
         localStorage.setItem("userInfo", loggedIn._id);
         navigate("/home");
-        // dispatch(setPosts({ posts: null }));
+        dispatch(setPosts({ posts: null }));
       }
     } catch (error) {
       toast.error("Login failed !!", {

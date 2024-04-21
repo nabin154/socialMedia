@@ -49,7 +49,7 @@ const MyPostWidget = ({ picturePath }) => {
       formData.append("picturePath", image.name);
     }
 try{
-    const response = await axiosInstance.post(`http://localhost:3001/posts`,formData);
+    const response = await axiosInstance.post(`/posts`,formData);
     const data =  response.data;
     if(data){
     dispatch(setPosts({ posts : data}));

@@ -20,7 +20,7 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
   const patchFriend = async () => {
     try {
       await axiosInstance.patch(
-        `http://localhost:3001/user/${id}/${friendId}`);
+        `/user/${id}/${friendId}`);
 
       dispatch(setReceivedFriendRequests({ friends: isAccepted }));
 
@@ -32,7 +32,7 @@ const isAccepted = friendrequests.filter(({_id})=> _id != friendId);
   const deleteRequest = async () => {
     try {
       await axiosInstance.patch(
-        `http://localhost:3001/user/friendReq/${id}/${friendId}`);
+        `/user/friendReq/${id}/${friendId}`);
       dispatch(setReceivedFriendRequests({ friends: isAccepted }));
     } catch (error) {
       console.error("Error declining friend request:", error);

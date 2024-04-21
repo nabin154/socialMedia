@@ -16,7 +16,7 @@ const ProfilePage = () => {
 
   const getUser = async () => {
     try{
-    const response = await axiosInstance.get(`http://localhost:3001/user/${userId}`);
+    const response = await axiosInstance.get(`/user/${userId}`);
     const data =  response.data;
     setUser(data);
     }catch(err)

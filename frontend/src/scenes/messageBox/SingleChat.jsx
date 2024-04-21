@@ -62,7 +62,7 @@ const SingleChat = ({ selectedChat, setSelectedChat, setFetchAgain }) => {
 
   const fetchMessages = async () => {
     try {
-      const response = await axiosInstance.get(`http://localhost:3001/messages/${selectedChat._id}`);
+      const response = await axiosInstance.get(`/messages/${selectedChat._id}`);
       if (response.data) {
         const data = response.data;
         dispatch(setMessages(data));

@@ -10,7 +10,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
   const getPosts = async () => {
     try {
-        const response = await axiosInstance.get("http://localhost:3001/posts");
+        const response = await axiosInstance.get("/posts");
         dispatch(setPosts({ posts: response.data }));
     } catch (error) {
         console.error('Error fetching posts:', error);
@@ -19,7 +19,7 @@ const PostsWidget = ({ userId, isProfile = false }) => {
 
 const getUserPosts = async () => {
   try {
-      const response = await axiosInstance.get(`http://localhost:3001/posts/${userId}/posts`);
+      const response = await axiosInstance.get(`/posts/${userId}/posts`);
       dispatch(setPosts({ posts: response.data }));
   } catch (error) {
       console.error('Error fetching user posts:', error);

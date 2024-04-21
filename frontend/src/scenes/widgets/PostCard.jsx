@@ -43,7 +43,7 @@ const PostCard = ({
   const patchLike = async () => {
     try {
       console.log(postId);
-      const response = await axiosInstance.patch(`http://localhost:3001/posts/${postId}/like`, {
+      const response = await axiosInstance.patch(`/posts/${postId}/like`, {
         userId: loggedInUserId
       });
       const updatedPost = response.data;

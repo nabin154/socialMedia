@@ -32,7 +32,7 @@ const SearchUsers = () => {
     
   searchTimeout = setTimeout(async () => {
         try {
-            const { data } = await axiosInstance.get(`http://localhost:3001/user?username = ${searchValue}`);
+            const { data } = await axiosInstance.get(`/user?username = ${searchValue}`);
             setSearchedUsers(data);
             console.log(data);
         } catch (error) {

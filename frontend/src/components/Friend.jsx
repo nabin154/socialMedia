@@ -34,7 +34,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile, 
     if (isFriend === undefined) {
       try {
         const response = await axiosInstance.patch(
-          `http://localhost:3001/user/friendReq/${_id}/${friendId}`);
+          `/user/friendReq/${_id}/${friendId}`);
         const data = response.data;
         const { sent, received } = data;
         dispatch(setReceivedFriendRequests({ friends: received }));
@@ -48,7 +48,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile, 
   const addRemoveFriend = async () => {
     try {
       const response = await axiosInstance.patch(
-        `http://localhost:3001/user/${_id}/${friendId}`);
+        `/user/${_id}/${friendId}`);
       const data = response.data;
       dispatch(setFriends({ friends: data }));
     } catch (error) {
@@ -57,7 +57,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath, postId, isProfile, 
   };
   const createChat = async () => {
     try {
-      const response = await axiosInstance.post("http://localhost:3001/chats/createchat", {
+      const response = await axiosInstance.post("/chats/createchat", {
         friendId: friendId,
       });
       if (response.data) {

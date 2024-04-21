@@ -49,7 +49,7 @@ const Navbar = () => {
 
 const handleLogout = async()  =>{
   try{
-  const  response = await axiosInstance.post('http://localhost:3001/auth/logout',{});
+  const  response = await axiosInstance.post('/auth/logout',{});
   if(response.data){
   dispatch(setLogout());
   localStorage.removeItem('userInfo');

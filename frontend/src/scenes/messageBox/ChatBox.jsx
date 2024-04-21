@@ -32,7 +32,7 @@ const ChatBox = () => {
 
   const fetchChats = async () => {
     try {
-      const response = await axiosInstance.get("http://localhost:3001/chats");
+      const response = await axiosInstance.get("/chats");
       if (response.data) {
         setChats(response.data);
       }

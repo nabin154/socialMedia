@@ -35,7 +35,7 @@ const userId = useSelector((state)=> state.user._id);
 const getFriends = async () => {
   try {
     const response = await axiosInstance.get(
-      `http://localhost:3001/user/${userId}/friendRequests`,
+      `/user/${userId}/friendRequests`,
     );
 
     const { sent, received } = response.data;
