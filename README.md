@@ -29,7 +29,7 @@ Demo here :   https://www.youtube.com/watch?v=KAit2sMjNgA
 #### Friend Management::
 - Users can add friends, send friend requests, and manage their friend list.
 
-#### Posts::
+#### Posts:
 - Users can create posts, like, comment, and interact with posts from friends.
   
 #### Chat:
@@ -95,6 +95,9 @@ These are the things you need to do to install this project:
 4. Configure your mongoDB setup in `config.js`
 
  ##Extra Screenshots : 
+
+
+ 
 ![Screenshot 2024-04-18 150526](https://github.com/nabin154/socialMedia/assets/82200770/4ef32ad9-69a5-46bb-b9d3-d8b9ea80628a)
 ![Screenshot 2024-04-18 150651](https://github.com/nabin154/socialMedia/assets/82200770/2ca35a44-37aa-4548-b055-5850a9f1d3dc)
 ![Screenshot 2024-04-18 150928](https://github.com/nabin154/socialMedia/assets/82200770/d2e6ff8c-f3a9-465f-9af3-426fe60da25a)
@@ -120,4 +123,3 @@ Don't forget to give the project a star! Thanks again!
 5. Open a Pull Request
 
 
-lIVE DEMO : 
